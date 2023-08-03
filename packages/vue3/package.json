@@ -1,0 +1,23 @@
+{
+  "name": "@web-monitor/vue3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "埋点",
+    "性能",
+    "异常",
+    "性能采集",
+    "异常采集",
+    "前端埋点",
+    "前端性能采集"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@web-monitor/code": "workspace:*"
+  }
+}

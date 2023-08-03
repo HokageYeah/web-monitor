@@ -1,5 +1,5 @@
 {
-  "name": "web-monitor",
+  "name": "@web-monitor/code",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,8 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "rrweb-player": "1.0.0-alpha.4",
-    "sass": "^1.64.2",
-    "sass-loader": "^13.3.2"
+    "rrweb": "2.0.0-alpha.4"
   }
 }
