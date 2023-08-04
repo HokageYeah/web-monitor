@@ -6,7 +6,7 @@
     <el-button type="primary" size="small" @click="promiseError()"
       >点击promise报错</el-button
     >
-    <el-button type="primary" size="small" @click="showImgTrue = true"
+    <el-button type="primary" size="small" @click="resourceError()"
       >点击加载资源报错</el-button
     >
     <img
@@ -51,6 +51,18 @@ const promiseError = () => {
   promiseWrap().then((res) => {
     console.log("res", res);
   });
+};
+const resourceError = () => {
+  showImgTrue.value = true
+  debugger
+  // let script = document.createElement("script");
+  // script.type = "text/javascript";
+  // script.src = "https://abc.com/index.js";
+  // document.body.appendChild(script);
+  // // 资源加载失败
+  // script.onerror = () => {
+  //   // this.getTableData();
+  // };
 };
 const errorPlay = () => {
   const screenList = getRecordEvent();
