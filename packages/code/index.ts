@@ -1,4 +1,4 @@
-import { initRecordScreen, getRecordEvent } from "./src/lib/recordscreen";
+import { initRecordScreen, getRecordEvent } from "./src/libs/recordscreen";
 import type { InitOptions } from "./src/types/options";
 
 function init(options: InitOptions): void {
