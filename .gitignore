@@ -5,6 +5,4 @@ coverage
 *.local
 /dist
 package-lock.json
-types
-
 
