@@ -1,3 +1,5 @@
+import { EventBus } from "../libs/eventBus";
+
 interface Pv {
   core?: boolean; // 是否发送页面跳转相关数据
 }
@@ -13,4 +15,13 @@ export interface InitOptions {
 export interface RecordEventScope {
   scope: string;
   eventList: any[];
+}
+
+export interface AnyFun {
+  (...args: any[]): any;
+}
+
+export interface WebMonitor {
+  eventBus: EventBus;
+  yeahasdsd: string;
 }

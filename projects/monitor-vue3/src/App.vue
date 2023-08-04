@@ -6,7 +6,14 @@
     <el-button type="primary" size="small" @click="promiseError()"
       >点击promise报错</el-button
     >
-
+    <el-button type="primary" size="small" @click="showImgTrue = true"
+      >点击加载资源报错</el-button
+    >
+    <img
+      class="resu-img"
+      v-if="showImgTrue"
+      src="https://www.baidu.com/as.webp"
+    />
     <el-button type="primary" size="small" @click="errorPlay()"
       >点击播放</el-button
     >
@@ -29,6 +36,7 @@ import { getRecordEvent } from "@web-monitor/vue3";
 defineOptions({ name: "App" });
 const errDialogVisible = ref(false);
 const recordscreen = ref(null);
+const showImgTrue = ref(false);
 const codeError = () => {
   console.log("点击报错");
   const a = {};
@@ -64,6 +72,12 @@ const errorPlay = () => {
   :deep(.el-dialog__header),
   :deep(.el-dialog__body) {
     padding: 0px;
+  }
+  .resu-img {
+    display: block;
+    width: 200px;
+    height: 200px;
+    margin-right: 20px;
   }
 }
 </style>
