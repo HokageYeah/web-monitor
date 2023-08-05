@@ -29,13 +29,19 @@ const replace = (key: EVENTTYPES) => {
 
 /**
  * 监听处理事件
+ * vue在处理资源加载错误时，会捕获并阻止冒泡到window对象上。
  */
 const listenError = (type: EVENTTYPES) => {
-  on(_global, type, (e: Event) => {
-    console.log("注意报错了listenError-----");
-    // 错误用eventbus 派发给相关的事件处理
-    eventBus.publishSubscribe(type, e);
-  });
+  on(
+    _global,
+    type,
+    (e: Event) => {
+      console.log("注意报错了listenError-----");
+      // 错误用eventbus 派发给相关的事件处理
+      eventBus.publishSubscribe(type, e);
+    },
+    true
+  );
 };
 
 /**

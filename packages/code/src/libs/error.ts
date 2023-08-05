@@ -1,5 +1,6 @@
 import { EVENTTYPES, SENDID } from "../common/constant";
 import { isType } from "../utils";
+import { _global } from "../utils/global";
 import { eventBus } from "./eventBus";
 
 /**
@@ -17,8 +18,8 @@ const parseErrorEvent = (event: ErrorEvent | PromiseRejectedResult) => {
     return { eventId: SENDID.CODE, ...parseError(event.reason) };
   }
   const { target } = event;
-  debugger;
-  if (isType(target, "HTMLElement")) {
+  if (target instanceof HTMLElement) {
+    debugger;
     const htmlTarget = <HTMLElement>target;
     // 为1代表节点是元素节点
     if (htmlTarget.nodeType == 1) {
@@ -39,6 +40,25 @@ const parseErrorEvent = (event: ErrorEvent | PromiseRejectedResult) => {
       return result;
     }
   }
+  // 代码异常
+  if (event.error) {
+    // chrome中的error对象没有fileName等属性,将event中的补充给error对象
+    const e = event.error;
+    e.fileName = e.filename || event.filename;
+    e.columnNumber = e.colno || event.colno;
+    e.lineNumber = e.lineno || event.lineno;
+    return { eventId: SENDID.CODE, ...parseError(e) };
+  }
+
+  // 兜底
+  // ie9版本,从全局的event对象中获取错误信息
+  return {
+    eventId: SENDID.CODE,
+    line: (_global as any).event.errorLine,
+    col: (_global as any).event.errorCharacter,
+    errMessage: (_global as any).event.errorMessage,
+    triggerPageUrl: (_global as any).event.errorUrl,
+  };
 };
 
 /**
@@ -61,6 +81,7 @@ const initError = () => {
       console.log("错误信息-------", e);
       debugger;
       const errorInfo = parseErrorEvent(e);
+      debugger
       //   if (isIgnoreErrors(errorInfo)) return;
       //   emit(errorInfo);
     },
@@ -73,6 +94,7 @@ const initError = () => {
     callback: (e: PromiseRejectedResult) => {
       console.log("错误信息PromiseRejectedResult-------", e);
       const errorInfo = parseErrorEvent(e);
+      debugger
     },
   });
 };

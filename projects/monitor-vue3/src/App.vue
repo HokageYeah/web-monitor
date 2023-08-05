@@ -17,6 +17,15 @@
     <el-button type="primary" size="small" @click="errorPlay()"
       >点击播放</el-button
     >
+    <el-button type="primary" size="small" @click="asyncError"
+      >异步错误</el-button
+    >
+    <el-button type="info" size="small" @click="xhrError"
+      >xhr请求报错</el-button
+    >
+    <el-button type="warning" size="small" @click="fetchError"
+      >fetch请求报错</el-button
+    >
     <el-dialog
       v-model="errDialogVisible"
       width="1024px"
@@ -52,6 +61,29 @@ const promiseError = () => {
     console.log("res", res);
   });
 };
+const asyncError = () => {
+  setTimeout(() => {
+    JSON.parse("");
+  });
+};
+const xhrError = () => {
+  debugger;
+  let _this = this;
+  let ajax = new XMLHttpRequest();
+  ajax.open("GET", "https://abc.com/test/api");
+  ajax.setRequestHeader("content-type", "application/json");
+  ajax.onreadystatechange = function () {
+    if (ajax.readyState == 4) {
+      debugger;
+      console.log(_this);
+    }
+    if (ajax.status === 200 || ajax.status === 304) {
+      console.log("ajax", ajax);
+    }
+  };
+  ajax.send();
+  ajax.addEventListener("loadend", () => {});
+};
 const errorPlay = () => {
   const screenList = getRecordEvent();
   debugger;
@@ -65,6 +97,24 @@ const errorPlay = () => {
       },
     });
   });
+};
+
+const fetchError = () => {
+  fetch("https://jsonplaceholder.typicode.com/posts/a", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+    },
+    body: JSON.stringify({ id: 1 }),
+  })
+    .then((res) => {
+      if (res.status == 404) {
+        debugger;
+      }
+    })
+    .catch(() => {
+      debugger;
+    });
 };
 </script>
 <style scoped lang="scss">
