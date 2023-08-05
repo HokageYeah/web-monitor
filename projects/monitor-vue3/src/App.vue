@@ -6,7 +6,7 @@
     <el-button type="primary" size="small" @click="promiseError()"
       >点击promise报错</el-button
     >
-    <el-button type="primary" size="small" @click="showImgTrue = true"
+    <el-button type="primary" size="small" @click="resourceError()"
       >点击加载资源报错</el-button
     >
     <img
@@ -65,6 +65,9 @@ const asyncError = () => {
   setTimeout(() => {
     JSON.parse("");
   });
+};
+const resourceError = () => {
+  showImgTrue.value = true
 };
 const xhrError = () => {
   debugger;
