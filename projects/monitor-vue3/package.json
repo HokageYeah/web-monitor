@@ -4,7 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start": "concurrently  \"npm run dev\" \"npm run service\"",
     "dev": "vite",
+    "service": "nodemon ./http-server.js",
     "build": "vue-tsc && vite build",
     "preview": "vite preview"
   },

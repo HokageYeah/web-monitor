@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "concurrently": "^8.2.0",
+    "nodemon": "^3.0.1",
     "rrweb-player": "1.0.0-alpha.4",
     "sass": "^1.64.2",
     "sass-loader": "^13.3.2"
