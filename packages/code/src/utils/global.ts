@@ -1,9 +1,10 @@
 import { WebMonitor } from "../types/options";
+import { variableTypeDetection } from "./verifyType";
 
 // 先判断是否处于浏览器环境 有window就是处于浏览器环境
-export const isBrowserEnv =
-  Object.prototype.toString.call(typeof window !== "undefined" ? window : 0) ===
-  "[object Window]";
+export const isBrowserEnv = variableTypeDetection.isWindow(
+  typeof window !== "undefined" ? window : 0
+);
 
 // 获取全局变量
 const getGlobal = () => {

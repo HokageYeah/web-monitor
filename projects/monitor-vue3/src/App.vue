@@ -53,12 +53,17 @@ const codeError = () => {
   a.split("/");
 };
 const promiseError = () => {
-  const promiseWrap = () =>
-    new Promise((_resolve, reject) => {
-      reject("promise --- reject");
-    });
-  promiseWrap().then((res) => {
-    console.log("res", res);
+  // const promiseWrap = () =>
+  //   new Promise((_resolve, reject) => {
+  //     reject("promise --- reject");
+  //   });
+  // promiseWrap().then((res) => {
+  //   console.log("res", res);
+  // });
+  new Promise<void>((resolve) => {
+    let person: any = {};
+    person.name.age();
+    resolve();
   });
 };
 const asyncError = () => {
@@ -67,7 +72,7 @@ const asyncError = () => {
   });
 };
 const resourceError = () => {
-  showImgTrue.value = true
+  showImgTrue.value = true;
 };
 const xhrError = () => {
   debugger;

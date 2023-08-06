@@ -44,3 +44,55 @@ export function on(
 export function isType(type: any, values: string) {
   return Object.prototype.toString.call(type) === `[object ${values}]`;
 }
+
+/**
+ * map方法
+ * @param arr 源数组
+ * @param fn 条件函数
+ * @returns
+ */
+export function map(arr: any[], fn: AnyFun) {
+  return arrayMap.call(arr, fn);
+}
+
+const arrayMap =
+  Array.prototype.map ||
+  function polyfillMap(this: any, fn) {
+    const result = [];
+    for (let i = 0; i < this.length; i += 1) {
+      result.push(fn(this[i], i, this));
+    }
+    return result;
+  };
+
+const arrayFilter =
+  Array.prototype.filter ||
+  function filterPolyfill(this: any, fn: AnyFun) {
+    const result = [];
+    for (let i = 0; i < this.length; i += 1) {
+      if (fn(this[i], i, this)) {
+        result.push(this[i]);
+      }
+    }
+    return result;
+  };
+
+/**
+ * filter方法
+ * @param arr 源数组
+ * @param fn 条件函数
+ */
+export function filter(arr: any[], fn: AnyFun) {
+  return arrayFilter.call(arr, fn);
+}
+
+const arrayFind =
+  Array.prototype.find ||
+  function findPolyfill(this: any, fn: AnyFun) {
+    for (let i = 0; i < this.length; i += 1) {
+      if (fn(this[i], i, this)) {
+        return this[i];
+      }
+    }
+    return undefined;
+  };

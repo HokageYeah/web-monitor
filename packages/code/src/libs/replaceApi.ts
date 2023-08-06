@@ -30,6 +30,7 @@ const replace = (key: EVENTTYPES) => {
 /**
  * 监听处理事件
  * vue在处理资源加载错误时，会捕获并阻止冒泡到window对象上。
+ * type: error
  */
 const listenError = (type: EVENTTYPES) => {
   on(
@@ -45,7 +46,7 @@ const listenError = (type: EVENTTYPES) => {
 };
 
 /**
- * 监听 - unhandledrejection（promise异常）
+ * 监听 - type: unhandledrejection（promise异常）
  */
 const listenEunhandledrejection = (type: EVENTTYPES) => {
   on(_global, type, (e: PromiseRejectionEvent) => {

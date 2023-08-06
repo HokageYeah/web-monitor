@@ -1,7 +1,10 @@
 import { EVENTTYPES, SENDID } from "../common/constant";
-import { isType } from "../utils";
+import { filter, getTimestamp, isType, map } from "../utils";
 import { _global } from "../utils/global";
+import { resourceTransform } from "../utils/transformData";
+import { variableTypeDetection } from "../utils/verifyType";
 import { eventBus } from "./eventBus";
+import ErrorStackParser from "error-stack-parser";
 
 /**
  * 判断是否为 promise-reject 错误类型
@@ -19,6 +22,7 @@ const parseErrorEvent = (event: ErrorEvent | PromiseRejectedResult) => {
   }
   const { target } = event;
   if (target instanceof HTMLElement) {
+    // 资源加载出错
     debugger;
     const htmlTarget = <HTMLElement>target;
     // 为1代表节点是元素节点
@@ -27,19 +31,26 @@ const parseErrorEvent = (event: ErrorEvent | PromiseRejectedResult) => {
         initiatorType: htmlTarget.nodeName.toLowerCase(),
         eventId: SENDID.RESOURCE,
         requestUrl: "",
+        time: getTimestamp(),
       };
       switch (htmlTarget.nodeName.toLowerCase()) {
         case "link":
-          result.requestUrl = (target as HTMLLinkElement).href;
+          result.requestUrl = resourceTransform(
+            (target as HTMLLinkElement).href
+          );
           break;
         default:
-          result.requestUrl =
+          result.requestUrl = resourceTransform(
             (target as HTMLImageElement).currentSrc ||
-            (target as HTMLScriptElement).src;
+              (target as HTMLScriptElement).src
+          );
       }
       return result;
     }
   }
+  const stackFrame = ErrorStackParser.parse(!target ? event : event.error)[0];
+  debugger;
+  console.log(stackFrame);
   // 代码异常
   if (event.error) {
     // chrome中的error对象没有fileName等属性,将event中的补充给error对象
@@ -47,7 +58,10 @@ const parseErrorEvent = (event: ErrorEvent | PromiseRejectedResult) => {
     e.fileName = e.filename || event.filename;
     e.columnNumber = e.colno || event.colno;
     e.lineNumber = e.lineno || event.lineno;
-    return { eventId: SENDID.CODE, ...parseError(e) };
+    return {
+      eventId: SENDID.CODE,
+      ...parseError(!target ? event : e),
+    };
   }
 
   // 兜底
@@ -61,6 +75,60 @@ const parseErrorEvent = (event: ErrorEvent | PromiseRejectedResult) => {
   };
 };
 
+type InstabilityNature = {
+  lineNumber: string;
+  fileName: string;
+  columnNumber: string;
+};
+interface ErrorStack {
+  errMessage: string;
+  errStack: string;
+}
+
+/**
+ * 格式化错误对象信息
+ * @param err Error 错误对象
+ */
+function parseStack(err: Error): ErrorStack {
+  const { stack = "", message = "" } = err;
+  const result = { eventId: SENDID.CODE, errMessage: message, errStack: stack };
+
+  if (stack) {
+    const rChromeCallStack = /^\s*at\s*([^(]+)\s*\((.+?):(\d+):(\d+)\)$/;
+    const rMozlliaCallStack = /^\s*([^@]*)@(.+?):(\d+):(\d+)$/;
+    // chrome中包含了message信息,将其去除,并去除后面的换行符
+    const callStackStr = stack.replace(
+      new RegExp(`^[\\w\\s:]*${message}\n`),
+      ""
+    );
+    const callStackFrameList = map(
+      filter(callStackStr.split("\n"), (item: string) => item),
+      (str: string) => {
+        const chromeErrResult = str.match(rChromeCallStack);
+        if (chromeErrResult) {
+          return {
+            triggerPageUrl: chromeErrResult[2],
+            line: chromeErrResult[3], // 错误发生位置的行数
+            col: chromeErrResult[4], // 错误发生位置的列数
+          };
+        }
+
+        const mozlliaErrResult = str.match(rMozlliaCallStack);
+        if (mozlliaErrResult) {
+          return {
+            triggerPageUrl: mozlliaErrResult[2],
+            line: mozlliaErrResult[3],
+            col: mozlliaErrResult[4],
+          };
+        }
+        return {};
+      }
+    );
+    const item = callStackFrameList[0] || {};
+    return { ...result, ...item };
+  }
+  return result;
+}
 /**
  * 分析错误信息
  * @param e 错误源信息
@@ -69,6 +137,36 @@ const parseErrorEvent = (event: ErrorEvent | PromiseRejectedResult) => {
 const parseError = (e: any) => {
   debugger;
   console.log(e);
+  if (e instanceof Error) {
+    // fileName: 引发此错误的文件的路径 (此属性为非标准，所以下面得区分)
+    const { message, stack } = e as Error &
+      InstabilityNature;
+      debugger
+    const stackFrame = ErrorStackParser.parse(e)[0];
+    const { fileName, columnNumber, lineNumber } = stackFrame;
+    debugger
+    console.log(stackFrame);
+    if (fileName) {
+      return {
+        errMessage: message,
+        errStack: stack,
+        eventId: SENDID.CODE,
+        line: lineNumber, // 不稳定属性 - 在某些浏览器可能是undefined，被废弃了
+        col: columnNumber, // 不稳定属性 - 非标准，有些浏览器可能不支持
+        triggerPageUrl: fileName, // 不稳定属性 - 非标准，有些浏览器可能不支持
+      };
+    }
+    return parseStack(e);
+  }
+  if (e.message) return parseStack(e);
+
+  // reject 错误
+  if (typeof e === "string") return { eventId: SENDID.REJECT, errMessage: e };
+
+  // console.error 暴露的错误
+  if (variableTypeDetection.isArray(e))
+    return { eventId: SENDID.CONSOLEERROR, errMessage: e.join(";") };
+
   return {};
 };
 
@@ -81,7 +179,7 @@ const initError = () => {
       console.log("错误信息-------", e);
       debugger;
       const errorInfo = parseErrorEvent(e);
-      debugger
+      debugger;
       //   if (isIgnoreErrors(errorInfo)) return;
       //   emit(errorInfo);
     },
@@ -93,8 +191,9 @@ const initError = () => {
     type: EVENTTYPES.UNHANDLEDREJECTION,
     callback: (e: PromiseRejectedResult) => {
       console.log("错误信息PromiseRejectedResult-------", e);
-      const errorInfo = parseErrorEvent(e);
       debugger
+      const errorInfo = parseErrorEvent(e);
+      debugger;
     },
   });
 };
