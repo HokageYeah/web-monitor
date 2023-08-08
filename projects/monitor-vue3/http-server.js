@@ -40,7 +40,14 @@ function setHttpHead(res) {
 function setHttpRequest(req, res, path) {
   console.log(path);
   switch (path) {
-    case "/getList":
+    case "/api/getList":
+      res.end(
+        JSON.stringify({
+          data: [1, 2, 3],
+        })
+      );
+      break;
+    case "/api/reportData":
       res.end(
         JSON.stringify({
           data: [1, 2, 3],

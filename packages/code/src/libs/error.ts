@@ -5,6 +5,7 @@ import { resourceTransform } from "../utils/transformData";
 import { variableTypeDetection } from "../utils/verifyType";
 import { eventBus } from "./eventBus";
 import ErrorStackParser from "error-stack-parser";
+import { transportData } from "./reportData";
 
 /**
  * 判断是否为 promise-reject 错误类型
@@ -181,7 +182,7 @@ const initError = () => {
       const errorInfo = parseErrorEvent(e);
       debugger;
       //   if (isIgnoreErrors(errorInfo)) return;
-      //   emit(errorInfo);
+      transportData.send(errorInfo, true);
     },
   });
 

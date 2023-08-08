@@ -1,6 +1,7 @@
 import { initError } from "./src/libs/error";
 import { initRecordScreen, getRecordEvent } from "./src/libs/recordscreen";
 import { initReplace } from "./src/libs/replaceApi";
+import { initTransportData } from "./src/libs/reportData";
 import type { InitOptions } from "./src/types/options";
 import { _global } from "./src/utils/global";
 
@@ -25,6 +26,7 @@ function init(options: InitOptions): void {
 
   // 初始化
   initReplace();
+  initTransportData()
 
   // 初始化各个业务模块
   initError();

@@ -24,4 +24,5 @@ export interface AnyFun {
 export interface WebMonitor {
   eventBus: EventBus;
   yeahasdsd: string;
+  transportData: any
 }

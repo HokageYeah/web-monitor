@@ -96,3 +96,18 @@ const arrayFind =
     }
     return undefined;
   };
+
+/**
+ * 埋点、错误报告发送请求用 - navigator.sendBeacon 最好
+ * 
+ * 不受页面卸载过程的影响，确保数据可靠发送。
+   异步执行，不阻塞页面关闭或跳转。
+   能够发送跨域请求。
+   只能发送post请求
+ */
+export function sendByBeacon(url: string, data: any) {
+  if (navigator.sendBeacon) {
+    return navigator.sendBeacon(url, JSON.stringify(data));
+  }
+  return false;
+}
