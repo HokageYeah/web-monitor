@@ -1,5 +1,5 @@
-import { EVENTTYPES, SENDID } from "../common/constant";
-import { filter, getTimestamp, isType, map } from "../utils";
+import { EVENTTYPES, SEDNEVENTTYPES, SENDID } from "../common/constant";
+import { filter, getLocationHref, getTimestamp, isType, map } from "../utils";
 import { _global } from "../utils/global";
 import { resourceTransform } from "../utils/transformData";
 import { variableTypeDetection } from "../utils/verifyType";
@@ -182,7 +182,7 @@ const initError = () => {
       const errorInfo = parseErrorEvent(e);
       debugger;
       //   if (isIgnoreErrors(errorInfo)) return;
-      transportData.send(errorInfo, true);
+      emitError(errorInfo)
     },
   });
 
@@ -198,5 +198,19 @@ const initError = () => {
     },
   });
 };
+
+/**
+ * 发送错误事件信息
+ * @param errorInfo 信息源
+ */
+function emitError(errorInfo: any):void{
+  const info = {
+    ...errorInfo,
+    errorType: SEDNEVENTTYPES.ERROR,
+    triggerPageUrl: getLocationHref(),
+    triggerTime: getTimestamp()
+  }
+  transportData.emit(info, true);
+}
 
 export { initError };

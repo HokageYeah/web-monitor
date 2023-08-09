@@ -111,3 +111,12 @@ export function sendByBeacon(url: string, data: any) {
   }
   return false;
 }
+
+/**
+ * 获取当前页面的url
+ * @returns 当前页面的url
+ */
+export function getLocationHref() {
+  if (typeof document === "undefined" || document.location == null) return "";
+  return window.location.href;
+}
