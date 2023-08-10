@@ -11,6 +11,11 @@
   "license": "ISC",
   "dependencies": {
     "error-stack-parser": "^2.1.4",
+    "js-base64": "^3.7.5",
+    "pako": "^2.1.0",
     "rrweb": "2.0.0-alpha.4"
+  },
+  "devDependencies": {
+    "@types/pako": "^2.0.0"
   }
 }

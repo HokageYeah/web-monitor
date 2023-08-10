@@ -6,6 +6,7 @@ import { variableTypeDetection } from "../utils/verifyType";
 import { eventBus } from "./eventBus";
 import ErrorStackParser from "error-stack-parser";
 import { transportData } from "./reportData";
+import { getRecordEvent, zip } from "./recordscreen";
 
 /**
  * 判断是否为 promise-reject 错误类型
@@ -207,6 +208,7 @@ const initError = () => {
 function emitError(errorInfo: any):void{
   const info = {
     ...errorInfo,
+    recordScreen: zip(getRecordEvent()),
     errorType: SEDNEVENTTYPES.ERROR,
     triggerPageUrl: getLocationHref(),
     triggerTime: getTimestamp()

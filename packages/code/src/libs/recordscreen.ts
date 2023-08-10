@@ -1,6 +1,8 @@
 import { record } from "rrweb";
 import { RecordEventScope } from "../types/options";
 import { getTimestamp } from "../utils";
+import pako from 'pako'
+import { Base64 } from 'js-base64'
 
 const MAXSCOPETIME = 5000; // 每5s记录一个区间
 const MAXSCOPELENGTH = 3; // 录屏数组最长长度 - 不要小于3
@@ -53,4 +55,29 @@ const getRecordEvent = (): RecordEventScope[] => {
     .flat();
 };
 
-export { recordscreenList, initRecordScreen, getRecordEvent };
+/**
+ * 视频压缩
+ * @param data 压缩源
+ */
+const zip = (data: any): string => {
+  debugger;
+  console.log("压缩----", data);
+  if (!data) return data;
+  // 判断数据是否需要转为JSON
+  const dataJson =
+    typeof data !== "string" && typeof data !== "number"
+      ? JSON.stringify(data)
+      : data;
+  // 使用Base64.encode处理字符编码，兼容中文
+  const str = Base64.encode(dataJson as string);
+  const binaryString = pako.gzip(str);
+  const arr = Array.from(binaryString);
+  let s = '';
+  arr.forEach((item: any) => {
+    s += String.fromCharCode(item);
+  });
+  debugger
+  return Base64.btoa(s);;
+};
+
+export { recordscreenList, initRecordScreen, getRecordEvent, zip };
