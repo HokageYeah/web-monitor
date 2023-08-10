@@ -48,9 +48,11 @@ function setHttpRequest(req, res, path) {
       );
       break;
     case "/api/reportData":
+      console.log("发送消息~~~");
+      console.log(req.body);
       res.end(
         JSON.stringify({
-          data: [1, 2, 3],
+          meaage: "上报成功！",
         })
       );
       break;

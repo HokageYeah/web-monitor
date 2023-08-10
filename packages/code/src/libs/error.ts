@@ -195,6 +195,7 @@ const initError = () => {
       debugger
       const errorInfo = parseErrorEvent(e);
       debugger;
+      emitError(errorInfo)
     },
   });
 };

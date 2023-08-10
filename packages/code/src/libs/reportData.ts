@@ -1,11 +1,15 @@
 import { sendByBeacon } from "../utils";
 import { _support } from "../utils/global";
+import { options } from "./options";
 // import { options } from './options'
 
 export class TransportData {
 
-  private send() {
-    // this.executeSend(options)
+  private send(url: string, data: any) {
+    return new Promise((resolve, reject) => {
+      debugger
+      resolve({sendType: 'sendBeacon', success: sendByBeacon(url, data)})
+    })
   }
 
   /**
@@ -17,7 +21,10 @@ export class TransportData {
     // if (flush) {
     //     sendByBeacon("http://localhost:8080/api/reportData",{test: '测试'})
     // }
-    this.send()
+    debugger
+    this.send(options.dsn, e).then((res :any) => {
+      console.log('发送给服务器消息成功～～');
+    })
   }
 }
 
