@@ -120,3 +120,20 @@ export function getLocationHref() {
   if (typeof document === "undefined" || document.location == null) return "";
   return window.location.href;
 }
+
+/**
+ * 判断对象是否超过指定kb大小
+ * @param object 源对象
+ * @param limitInKB 最大kb
+ */
+
+export function isObjectOverSize(object: any, limitInKB: number) {
+  const jsonString = JSON.stringify(object);
+  // 缺点是性能方面可能略逊于使用 TextEncoder().encode().length 方法，因为它需要创建一个 Blob 对象。
+  // const byteLength = new Blob([jsonString]).size;
+  // 优点是高效且准确地计算字节长度。
+  // 缺点是相对于创建 Blob 对象的方法稍微复杂一些，并且需要额外引入 TextEncoder 对象。
+  const byteLength = new TextEncoder().encode(jsonString).length
+  console.log('数据大小------', byteLength);
+  return byteLength > limitInKB * 1024;
+}

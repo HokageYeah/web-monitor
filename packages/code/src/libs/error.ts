@@ -7,6 +7,7 @@ import { eventBus } from "./eventBus";
 import ErrorStackParser from "error-stack-parser";
 import { transportData } from "./reportData";
 import { getRecordEvent, zip } from "./recordscreen";
+import { options } from "./options";
 
 /**
  * 判断是否为 promise-reject 错误类型
@@ -141,12 +142,11 @@ const parseError = (e: any) => {
   console.log(e);
   if (e instanceof Error) {
     // fileName: 引发此错误的文件的路径 (此属性为非标准，所以下面得区分)
-    const { message, stack } = e as Error &
-      InstabilityNature;
-      debugger
+    const { message, stack } = e as Error & InstabilityNature;
+    debugger;
     const stackFrame = ErrorStackParser.parse(e)[0];
     const { fileName, columnNumber, lineNumber } = stackFrame;
-    debugger
+    debugger;
     console.log(stackFrame);
     if (fileName) {
       return {
@@ -183,7 +183,7 @@ const initError = () => {
       const errorInfo = parseErrorEvent(e);
       debugger;
       //   if (isIgnoreErrors(errorInfo)) return;
-      emitError(errorInfo)
+      emitError(errorInfo);
     },
   });
 
@@ -193,10 +193,10 @@ const initError = () => {
     type: EVENTTYPES.UNHANDLEDREJECTION,
     callback: (e: PromiseRejectedResult) => {
       console.log("错误信息PromiseRejectedResult-------", e);
-      debugger
+      debugger;
       const errorInfo = parseErrorEvent(e);
       debugger;
-      emitError(errorInfo)
+      emitError(errorInfo);
     },
   });
 };
@@ -205,13 +205,15 @@ const initError = () => {
  * 发送错误事件信息
  * @param errorInfo 信息源
  */
-function emitError(errorInfo: any):void{
-  const info = {
+function emitError(errorInfo: any): void {
+  let info = {
     ...errorInfo,
-    recordScreen: zip(getRecordEvent()),
     errorType: SEDNEVENTTYPES.ERROR,
     triggerPageUrl: getLocationHref(),
-    triggerTime: getTimestamp()
+    triggerTime: getTimestamp(),
+  };
+  if (options.isRecordScreen) {
+    info = { ...info, recordScreen: zip(getRecordEvent()) };
   }
   transportData.emit(info, true);
 }

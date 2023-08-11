@@ -46,6 +46,7 @@ defineOptions({ name: "App" });
 const errDialogVisible = ref(false);
 const recordscreen = ref(null);
 const showImgTrue = ref(false);
+let playPath = "";
 
 onMounted(() => {
   // @ts-ignore
@@ -100,6 +101,7 @@ const xhrError = () => {
 };
 const errorPlay = () => {
   const screenList = getRecordEvent();
+  // const screenList = unzip(playPath)
   debugger;
   errDialogVisible.value = true;
   nextTick(() => {
@@ -123,9 +125,15 @@ const getAllMonitorList = () => {
     // body: JSON.stringify({ name: "zhangsan", age: 18 }),
   };
   fetch("http://localhost:8080/api/getAllMonitorList", params)
-    .then((res) => {
+    .then((res: any) => {
+      // playPath = res.data.pop();
       // 处理返回的数据
       console.log(res);
+      return res.json();
+    })
+    .then((res: any) => {
+      playPath = res.data.pop();
+      console.log("请求来了----？", res, playPath);
     })
     .catch((error) => {
       console.error(error);

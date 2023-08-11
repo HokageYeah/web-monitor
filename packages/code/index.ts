@@ -1,6 +1,6 @@
 import { initError } from "./src/libs/error";
 import { initOptions } from "./src/libs/options";
-import { initRecordScreen, getRecordEvent } from "./src/libs/recordscreen";
+import { initRecordScreen, getRecordEvent, unzip } from "./src/libs/recordscreen";
 import { initReplace } from "./src/libs/replaceApi";
 import { initTransportData } from "./src/libs/reportData";
 import type { InitOptions } from "./src/types/options";
@@ -39,4 +39,4 @@ function init(options: InitOptions): void {
   _global.__webMonitorInit__ = true;
 }
 
-export { InitOptions, init, getRecordEvent };
+export { InitOptions, init, getRecordEvent, unzip };

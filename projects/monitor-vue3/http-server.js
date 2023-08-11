@@ -39,6 +39,7 @@ function setHttpHead(res) {
 // 请求与逻辑
 function setHttpRequest(req, res, path) {
   console.log(path);
+  setHttpHead(res);
   if (req.method == "OPTIONS") {
     console.log("createServer-----", req.method);
     res.end();
@@ -55,7 +56,6 @@ function setHttpRequest(req, res, path) {
 }
 // 处理 GET 请求
 function handleGetRequest(req, res, path) {
-  setHttpHead(res);
   switch (path) {
     case "/api/getList":
       res.end(
@@ -86,7 +86,6 @@ function handlePostRequest(req, res, path) {
   //   res.end("Invalid data format");
   //   return;
   // }
-  setHttpHead(res);
   let body = "";
 
   req.on("data", (chunk) => {
