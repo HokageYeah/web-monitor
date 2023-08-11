@@ -40,12 +40,18 @@
 <script setup lang="ts">
 import rrwebPlayer from "rrweb-player";
 import "rrweb-player/dist/style.css";
-import { ref, nextTick } from "vue";
+import { ref, nextTick, onMounted } from "vue";
 import { getRecordEvent } from "@web-monitor/vue3";
 defineOptions({ name: "App" });
 const errDialogVisible = ref(false);
 const recordscreen = ref(null);
 const showImgTrue = ref(false);
+
+onMounted(() => {
+  // @ts-ignore
+  window.getAllMonitorList = getAllMonitorList;
+});
+
 const codeError = () => {
   console.log("点击报错");
   const a = {};
@@ -105,6 +111,25 @@ const errorPlay = () => {
       },
     });
   });
+};
+
+const getAllMonitorList = () => {
+  console.log("----getAllMonitorList-----");
+  const params = {
+    method: "POST", // 设置请求方法为 POST
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name: "zhangsan", age: 18 }),
+  };
+  fetch("http://localhost:8080/api/getAllMonitorList", params)
+    .then((res) => {
+      // 处理返回的数据
+      console.log(res);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };
 
 const fetchError = () => {

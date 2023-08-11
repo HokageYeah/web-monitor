@@ -56,6 +56,13 @@ function setHttpRequest(req, res, path) {
         })
       );
       break;
+    case "/api/getAllMonitorList":
+      res.end(
+        JSON.stringify({
+          meaage: "获取最新的getAllMonitorList数据！",
+        })
+      );
+      break;
     default:
       res.end("你好世界阿斯顿");
       break;

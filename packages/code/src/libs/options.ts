@@ -10,12 +10,15 @@ export class Options implements InitOptions {
   appCode = ""; // 应用code
   appVersion = ""; // 应用版本
   userUuid = ""; // 用户id(外部填充进来的id)
+  beforeSendData = (data: any) => {}; // 及时上报前的hook
+  afterSendData = (data: any) => {}; // 及时上报后的hook
 
   constructor(initOptions: InitOptions) {
     this.optionsInit(initOptions);
   }
 
   private optionsInit(options: any) {
+    debugger;
     for (const [key, value] of Object.entries(options)) {
       (this as any)[key] = value;
     }
@@ -29,42 +32,40 @@ export class Options implements InitOptions {
 
 const validateMustFill = (options: InitOptions) => {
   const validateList = [
-    validateOptionMustFill(options.dsn, 'dsn'),
-    validateOptionMustFill(options.appName, 'appName'),
-  ]
-  return validateList.every(item => !!item)
+    validateOptionMustFill(options.dsn, "dsn"),
+    validateOptionMustFill(options.appName, "appName"),
+  ];
+  return validateList.every((item) => !!item);
 };
 
 const validateOptionMustFill = (target: any, targetName: string) => {
-  if(isEmpty(target)) {
-    console.error(`@web-monitor: 【${targetName}】参数未填`)
-    return false
+  if (isEmpty(target)) {
+    console.error(`@web-monitor: 【${targetName}】参数未填`);
+    return false;
   }
-  return true
+  return true;
 };
 // 教研
 const validateInitOption = (options: InitOptions) => {
-  const {
-    dsn,
-    appName,
-    appVersion,
-    appCode,
-    userUuid
-  } = options
+  const { dsn, appName, appVersion, appCode, userUuid } = options;
   const validateList = [
-    validateOption(dsn, 'dsn', 'string'),
-    validateOption(appName, 'appName', 'string'),
-    validateOption(appVersion, 'appVersion', 'string'),
-    validateOption(appCode, 'appCode', 'string'),
-  ]
-  return validateList.every(item => !!item)
+    validateOption(dsn, "dsn", "string"),
+    validateOption(appName, "appName", "string"),
+    validateOption(appVersion, "appVersion", "string"),
+    validateOption(appCode, "appCode", "string"),
+  ];
+  return validateList.every((item) => !!item);
 };
 
-const validateOption = (target: any, targetName: string, type:string)=> {
-  if(!target || typeofAny(target) == type) return true
-  console.error(`web-monitor-TypeError: ${targetName}期望传入${type}类型，目前是${typeofAny(target)}类型`)
-  return false
-}
+const validateOption = (target: any, targetName: string, type: string) => {
+  if (!target || typeofAny(target) == type) return true;
+  console.error(
+    `web-monitor-TypeError: ${targetName}期望传入${type}类型，目前是${typeofAny(
+      target
+    )}类型`
+  );
+  return false;
+};
 
 export let options: Options;
 
@@ -75,7 +76,7 @@ export function initOptions(optionsParams: InitOptions) {
     return false;
   }
   // 教研通过后、开始初始化工作
-  options = new Options(optionsParams)
-  _support.options = options
+  options = new Options(optionsParams);
+  _support.options = options;
   return true;
 }

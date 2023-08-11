@@ -21,9 +21,11 @@ export class TransportData {
     // if (flush) {
     //     sendByBeacon("http://localhost:8080/api/reportData",{test: '测试'})
     // }
+    options.beforeSendData(e)
     debugger
     this.send(options.dsn, e).then((res :any) => {
       console.log('发送给服务器消息成功～～');
+      options.afterSendData(e)
     })
   }
 }
