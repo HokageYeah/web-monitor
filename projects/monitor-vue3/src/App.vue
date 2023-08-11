@@ -116,11 +116,11 @@ const errorPlay = () => {
 const getAllMonitorList = () => {
   console.log("----getAllMonitorList-----");
   const params = {
-    method: "POST", // 设置请求方法为 POST
+    method: "GET", // 设置请求方法为 POST
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ name: "zhangsan", age: 18 }),
+    // body: JSON.stringify({ name: "zhangsan", age: 18 }),
   };
   fetch("http://localhost:8080/api/getAllMonitorList", params)
     .then((res) => {

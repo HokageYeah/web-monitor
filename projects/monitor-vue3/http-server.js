@@ -1,6 +1,7 @@
 import http from "node:http";
 import url from "node:url";
 
+let allMonitorList = []
 const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
   const path = parsedUrl.pathname;
@@ -11,7 +12,6 @@ const server = http.createServer((req, res) => {
     res.end();
   } else {
     console.log("查看请求----", path);
-    setHttpHead(res);
     setHttpRequest(req, res, path);
   }
 });
@@ -39,6 +39,23 @@ function setHttpHead(res) {
 // 请求与逻辑
 function setHttpRequest(req, res, path) {
   console.log(path);
+  if (req.method == "OPTIONS") {
+    console.log("createServer-----", req.method);
+    res.end();
+    return;
+  } else if (req.method === "GET") {
+    handleGetRequest(req, res, path);
+  } else if (req.method === "POST") {
+    handlePostRequest(req, res, path);
+  } else {
+    res.statusCode = 405;
+    res.setHeader("Content-Type", "text/plain");
+    res.end("Method Not Allowed");
+  }
+}
+// 处理 GET 请求
+function handleGetRequest(req, res, path) {
+  setHttpHead(res);
   switch (path) {
     case "/api/getList":
       res.end(
@@ -47,24 +64,57 @@ function setHttpRequest(req, res, path) {
         })
       );
       break;
-    case "/api/reportData":
-      console.log("发送消息~~~");
-      console.log(req.body);
-      res.end(
-        JSON.stringify({
-          meaage: "上报成功！",
-        })
-      );
-      break;
     case "/api/getAllMonitorList":
       res.end(
         JSON.stringify({
-          meaage: "获取最新的getAllMonitorList数据！",
+          code: 200,
+          data: allMonitorList
         })
       );
       break;
     default:
-      res.end("你好世界阿斯顿");
+      res.end("你好世界阿斯顿GET");
       break;
   }
+}
+
+// 处理 POST 请求
+function handlePostRequest(req, res, path) {
+  // if (req.headers["content-type"] !== "application/json") {
+  //   res.statusCode = 400;
+  //   res.setHeader("Content-Type", "text/plain");
+  //   res.end("Invalid data format");
+  //   return;
+  // }
+  setHttpHead(res);
+  let body = "";
+
+  req.on("data", (chunk) => {
+    body += chunk;
+  });
+
+  req.on("end", () => {
+    try {
+      const data = JSON.parse(body);
+      console.log("查看post请求----", data);
+      switch (path) {
+        case "/api/reportData":
+          console.log("发送消息~~~");
+          allMonitorList.push(data)
+          res.end(
+            JSON.stringify({
+              meaage: "上报成功！",
+            })
+          );
+          break;
+        default:
+          res.end("你好世界阿斯顿POST");
+          break;
+      }
+    } catch (error) {
+      res.statusCode = 400;
+      res.setHeader('Content-Type', 'text/plain');
+      res.end('Invalid data format错误了');
+    }
+  });
 }

@@ -24,7 +24,7 @@ export class TransportData {
     options.beforeSendData(e)
     debugger
     this.send(options.dsn, e).then((res :any) => {
-      console.log('发送给服务器消息成功～～');
+      console.log('发送给服务器消息成功～～', e);
       options.afterSendData(e)
     })
   }
