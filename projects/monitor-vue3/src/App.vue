@@ -14,9 +14,6 @@
       v-if="showImgTrue"
       src="https://www.baidu.com/as.webp"
     />
-    <el-button type="primary" size="small" @click="errorPlay()"
-      >点击播放</el-button
-    >
     <el-button type="primary" size="small" @click="asyncError"
       >异步错误</el-button
     >
@@ -25,6 +22,9 @@
     >
     <el-button type="warning" size="small" @click="fetchError"
       >fetch请求报错</el-button
+    >
+    <el-button type="success" size="small" @click="errorPlay()"
+      >点击播放</el-button
     >
     <el-dialog
       v-model="errDialogVisible"
@@ -41,12 +41,12 @@
 import rrwebPlayer from "rrweb-player";
 import "rrweb-player/dist/style.css";
 import { ref, nextTick, onMounted } from "vue";
-import { getRecordEvent } from "@web-monitor/vue3";
+import { unzip } from "@web-monitor/vue3";
 defineOptions({ name: "App" });
 const errDialogVisible = ref(false);
 const recordscreen = ref(null);
 const showImgTrue = ref(false);
-let playPath = "";
+let playPath: any;
 
 onMounted(() => {
   // @ts-ignore
@@ -100,8 +100,9 @@ const xhrError = () => {
   ajax.addEventListener("loadend", () => {});
 };
 const errorPlay = () => {
-  const screenList = getRecordEvent();
-  // const screenList = unzip(playPath)
+  // const screenList = getRecordEvent();
+  const screenList: any = unzip(playPath.recordScreen);
+  console.log("screenList------", screenList);
   debugger;
   errDialogVisible.value = true;
   nextTick(() => {
@@ -133,7 +134,7 @@ const getAllMonitorList = () => {
     })
     .then((res: any) => {
       playPath = res.data.pop();
-      console.log("请求来了----？", res, playPath);
+      console.log("请求来了----？", playPath);
     })
     .catch((error) => {
       console.error(error);

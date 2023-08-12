@@ -15,5 +15,13 @@
     "rrweb-player": "1.0.0-alpha.4",
     "sass": "^1.64.2",
     "sass-loader": "^13.3.2"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.4",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "rollup": "^3.28.0",
+    "rollup-plugin-dts": "^5.3.1",
+    "rollup-plugin-esbuild": "^5.0.0"
   }
 }

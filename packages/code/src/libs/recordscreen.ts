@@ -85,10 +85,12 @@ const zip = (data: any): string => {
  * @param b64Data 解压源
  */
 const unzip = (b64Data: string) => {
+  debugger
   const strData = Base64.atob(b64Data);
   const charData = strData.split("").map(function (x) {
     return x.charCodeAt(0);
   });
+  debugger
   const binData = new Uint8Array(charData);
   const data: any = pako.ungzip(binData);
   // ↓切片处理数据，防止内存溢出报错↓
