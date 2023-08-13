@@ -2,12 +2,37 @@
   "name": "@web-monitor/code",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.cjs",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./*": "./*"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "前端埋点",
+    "前端性能采集",
+    "埋点",
+    "性能",
+    "异常",
+    "性能采集",
+    "异常采集"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HokageYeah/web-monitor.git"
+  },
+  "author": "HokageYeah  <https://github.com/HokageYeah>",
   "license": "ISC",
   "dependencies": {
     "error-stack-parser": "^2.1.4",

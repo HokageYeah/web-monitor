@@ -2,7 +2,20 @@
   "name": "@web-monitor/vue3",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.cjs",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./*": "./*"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,7 +28,11 @@
     "前端埋点",
     "前端性能采集"
   ],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HokageYeah/web-monitor.git"
+  },
+  "author": "HokageYeah  <https://github.com/HokageYeah>",
   "license": "ISC",
   "dependencies": {
     "@web-monitor/code": "workspace:*"

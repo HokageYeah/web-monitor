@@ -39,7 +39,7 @@ export class TransportData {
     });
   }
 
-  private async xhrPost(url: string, data: any): Promise<Response> {
+  private  xhrPost(url: string, data: any): Promise<Response> {
     return fetch(url, {
       method: "POST",
       body: JSON.stringify(data),

@@ -1,10 +1,11 @@
 {
   "name": "web-monitor",
   "version": "1.0.0",
+  "private": true,
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:rollup": "cross-env NODE_ENV=produaction  rollup -c"
   },
   "keywords": [],
   "author": "",
@@ -20,8 +21,13 @@
     "@rollup/plugin-commonjs": "^25.0.4",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.1.0",
+    "cross-env": "^7.0.3",
+    "esbuild-register": "^3.4.2",
     "rollup": "^3.28.0",
     "rollup-plugin-dts": "^5.3.1",
-    "rollup-plugin-esbuild": "^5.0.0"
+    "rollup-plugin-esbuild": "^5.0.0",
+    "rollup-plugin-typescript2": "^0.35.0",
+    "rollup-plugin-uglify": "^6.0.4",
+    "typescript": "^5.0.2"
   }
 }
