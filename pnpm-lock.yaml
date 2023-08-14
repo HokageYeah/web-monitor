@@ -80,7 +80,7 @@ importers:
   packages/vue3:
     dependencies:
       '@web-monitor/code':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../code
 
   projects/monitor-vue2:

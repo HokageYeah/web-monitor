@@ -1,6 +1,6 @@
 {
   "name": "@web-monitor/vue3",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.5",
   "description": "",
   "main": "dist/index.cjs",
   "module": "dist/index.esm.js",
@@ -35,6 +35,6 @@
   "author": "HokageYeah  <https://github.com/HokageYeah>",
   "license": "ISC",
   "dependencies": {
-    "@web-monitor/code": "workspace:*"
+    "@web-monitor/code": "workspace:^1.0.0"
   }
 }
