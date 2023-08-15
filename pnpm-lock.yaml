@@ -77,14 +77,23 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
 
-  packages/vue3:
+  packages/vue2:
     dependencies:
       '@web-monitor/code':
         specifier: workspace:^
         version: link:../code
 
+  packages/vue3:
+    dependencies:
+      '@web-monitor/code':
+        specifier: workspace:*
+        version: link:../code
+
   projects/monitor-vue2:
     dependencies:
+      '@web-monitor/vue2':
+        specifier: workspace:^
+        version: link:../../packages/vue2
       axios:
         specifier: ^1.4.0
         version: 1.4.0
@@ -129,7 +138,7 @@ importers:
   projects/monitor-vue3:
     dependencies:
       '@web-monitor/vue3':
-        specifier: workspace:^1.0.0
+        specifier: workspace:1.0.0-beta.5
         version: link:../../packages/vue3
       axios:
         specifier: ^1.4.0

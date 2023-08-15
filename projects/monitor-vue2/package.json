@@ -3,11 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "concurrently  \"npm run dev\" \"npm run service\"",
+    "dev": "vue-cli-service serve",
+    "service": "nodemon ./http-server.mjs",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@web-monitor/vue2": "workspace:^",
     "axios": "^1.4.0",
     "core-js": "^3.8.3",
     "element-ui": "^2.15.13",

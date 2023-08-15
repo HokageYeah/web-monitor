@@ -6,7 +6,7 @@ function install(app: any, options: InitOptions) {
 //     // 在这里可以处理错误，例如打印错误信息或发送到服务器
 //     console.log("vue3-Error:", err);
 //     console.log("vue3-Component:", vm);
-//     console.log("vue3-Additional Info:", info);
+//     console.log("vue3-Additional Info:", info);测试测试
 //   };
   init(options);
 }
