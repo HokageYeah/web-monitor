@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "concurrently  \"npm run dev\" \"npm run service\"",
+    "start": "npm run dev & npm run service",
     "dev": "vue-cli-service serve",
     "service": "nodemon ./http-server.mjs",
     "build": "vue-cli-service build",
