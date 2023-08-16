@@ -22,6 +22,15 @@ const replace = (key: EVENTTYPES) => {
     case EVENTTYPES.UNHANDLEDREJECTION:
       listenEunhandledrejection(EVENTTYPES.UNHANDLEDREJECTION);
       break;
+    // 重写fetch
+    case EVENTTYPES.FETCH:
+      fetchReplace(EVENTTYPES.FETCH);
+      break;
+    // 重写XMLHttpRequest
+    case EVENTTYPES.XHROPEN:
+      break;
+    case EVENTTYPES.XHRSEND:
+      break;
     default:
       break;
   }
@@ -55,5 +64,27 @@ const listenEunhandledrejection = (type: EVENTTYPES) => {
     eventBus.publishSubscribe(type, e);
   });
 };
+
+/**
+ * 重写fetch，添加拦截
+ */
+function fetchReplace(type: EVENTTYPES) {
+  // const originFetch = _global.fetch;
+  // _global.fetch = function (...args) {
+  //   const startTime = getTimestamp();
+  //   const promise = originFetch.apply(this, args);
+  //   const event = {
+  //     type,
+  //     target: promise,
+  //     request: {
+  //       startTime,
+  //       method: args[0].method,
+  //       url: args[0].url,
+  //     },
+  //   };
+  //   eventBus.publishSubscribe(type, event);
+  //   return promise;
+  // };
+}
 
 export { initReplace };

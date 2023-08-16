@@ -41,7 +41,7 @@
 import rrwebPlayer from "rrweb-player";
 import "rrweb-player/dist/style.css";
 import { ref, nextTick, onMounted } from "vue";
-import { unzip } from "@web-monitor/vue3";
+import { unzipRecordScreen } from "@web-monitor/vue3";
 defineOptions({ name: "App" });
 const errDialogVisible = ref(false);
 const recordscreen = ref(null);
@@ -101,7 +101,7 @@ const xhrError = () => {
 };
 const errorPlay = () => {
   // const screenList = getRecordEvent();
-  const screenList: any = unzip(playPath.recordScreen);
+  const screenList: any = unzipRecordScreen(playPath.recordScreen);
   console.log("screenList------", screenList);
   debugger;
   errDialogVisible.value = true;

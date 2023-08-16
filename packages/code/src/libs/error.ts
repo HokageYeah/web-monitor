@@ -218,4 +218,4 @@ function emitError(errorInfo: any): void {
   transportData.emit(info, true);
 }
 
-export { initError };
+export { initError, parseError, emitError };

@@ -1,6 +1,8 @@
-import { initError } from "./src/libs/error";
+import { SENDID } from "./src/common/constant";
+import { initError, parseError } from "./src/libs/error";
+import * as allExportMethods from "./src/libs/exportAllMethods";
 import { initOptions } from "./src/libs/options";
-import { initRecordScreen, getRecordEvent, unzip } from "./src/libs/recordscreen";
+import { initRecordScreen, getRecordEvent } from "./src/libs/recordscreen";
 import { initReplace } from "./src/libs/replaceApi";
 import { initTransportData } from "./src/libs/reportData";
 import type { InitOptions } from "./src/types/options";
@@ -23,13 +25,13 @@ function init(options: InitOptions): void {
   //   });
 
   // 如果sdk已经有了，则不需要在初始化一遍
-  if (_global.__webMonitorInit__) return;  
-  if (!initOptions(options)) return
-  console.log('初始化init----',_support.options);
+  if (_global.__webMonitorInit__) return;
+  if (!initOptions(options)) return;
+  console.log("初始化init----", _support.options);
 
   // 初始化
   initReplace();
-  initTransportData()
+  initTransportData();
 
   // 初始化各个业务模块
   initError();
@@ -39,4 +41,13 @@ function init(options: InitOptions): void {
   _global.__webMonitorInit__ = true;
 }
 
-export { InitOptions, init, getRecordEvent, unzip };
+export {
+  InitOptions,
+  init,
+  getRecordEvent,
+  SENDID,
+  parseError,
+  allExportMethods,
+};
+export * from "./src/libs/exportAllMethods";
+export default { ...allExportMethods };

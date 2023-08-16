@@ -32,7 +32,7 @@
 <script>
 import rrwebPlayer from "rrweb-player";
 import "rrweb-player/dist/style.css";
-import { unzip } from "@web-monitor/vue2";
+import { unzipRecordScreen } from "@web-monitor/vue2";
 export default {
   name: "App",
   data() {
@@ -64,7 +64,7 @@ export default {
     },
     errorPlay() {
       // const screenList = getRecordEvent();
-      const screenList = unzip(this.playPath.recordScreen);
+      const screenList = unzipRecordScreen(this.playPath.recordScreen);
       console.log("screenList------", screenList);
       console.log("screenList:this------", this.$refs.recordscreen);
       this.errDialogVisible = true;
