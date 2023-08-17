@@ -23,6 +23,13 @@ export function isValidKey(
   return object.includes(key);
 }
 
+export function isObjValidKey(
+  key: string | number | symbol,
+  object: object
+): key is keyof typeof object {
+  return object.hasOwnProperty(key);
+}
+
 /**
  * 添加事件监听器
  * @param target 对象
@@ -136,4 +143,20 @@ export function isObjectOverSize(object: any, limitInKB: number) {
   const byteLength = new TextEncoder().encode(jsonString).length
   console.log('数据大小------', byteLength);
   return byteLength > limitInKB * 1024;
+}
+
+/**
+ * 获取url地址上的参数
+ * @param url 请求url
+ * @returns 参数对象
+ */
+export function getGetParams(url: string) {
+  const params: any = {};
+  const search = url.split("?")[1];
+  if (!search) return params;
+  search.split("&").forEach((item) => {
+    const [key, value] = item.split("=");
+    params[decodeURIComponent(key)] = decodeURIComponent(value)
+  });
+  return params;
 }

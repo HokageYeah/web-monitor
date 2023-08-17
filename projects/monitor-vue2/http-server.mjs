@@ -1,7 +1,7 @@
 import http from "node:http";
 import url from "node:url";
 
-let allMonitorList = []
+let allMonitorList = [];
 const server = http.createServer((req, res) => {
   const parsedUrl = url.parse(req.url, true);
   const path = parsedUrl.pathname;
@@ -50,7 +50,13 @@ function setHttpRequest(req, res, path) {
     handlePostRequest(req, res, path);
   } else {
     res.statusCode = 405;
-    res.setHeader("Content-Type", "text/plain");
+    res.writeHead(405, {
+      "Content-Type": "text/plain;charset=utf-8",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "*",
+      "Access-Control-Allow-Headers": "Content-Type",
+    });
+    // res.setHeader("Content-Type", "text/plain");
     res.end("Method Not Allowed");
   }
 }
@@ -68,12 +74,21 @@ function handleGetRequest(req, res, path) {
       res.end(
         JSON.stringify({
           code: 200,
-          data: allMonitorList
+          data: allMonitorList,
         })
       );
       break;
     default:
-      res.end("你好世界阿斯顿GET");
+      // res.end("你好世界阿斯顿GET");
+      // res.statusCode = 404;
+      // res.setHeader('Content-Type', 'text/plain');
+      res.writeHead(404, {
+        "Content-Type": "text/plain;charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+      });
+      res.end("Invalid data format错误了");
       break;
   }
 }
@@ -99,7 +114,7 @@ function handlePostRequest(req, res, path) {
       switch (path) {
         case "/api/reportData":
           console.log("发送消息~~~");
-          allMonitorList.push(data)
+          allMonitorList.push(data);
           res.end(
             JSON.stringify({
               meaage: "上报成功！",
@@ -107,13 +122,27 @@ function handlePostRequest(req, res, path) {
           );
           break;
         default:
-          res.end("你好世界阿斯顿POST");
+          // res.end("你好世界阿斯顿POST");
+          res.writeHead(404, {
+            "Content-Type": "text/plain;charset=utf-8",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*",
+            "Access-Control-Allow-Headers": "Content-Type",
+          });
+          res.end("Invalid data format错误了");
           break;
       }
     } catch (error) {
-      res.statusCode = 400;
-      res.setHeader('Content-Type', 'text/plain');
-      res.end('Invalid data format错误了');
+      // res.statusCode = 400;
+      // res.setHeader('Content-Type', 'text/plain');
+      // res.end('Invalid data format错误了');
+      res.writeHead(404, {
+        "Content-Type": "text/plain;charset=utf-8",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+      });
+      res.end("Invalid data format错误了");
     }
   });
 }

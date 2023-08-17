@@ -12,7 +12,8 @@ export class Options implements InitOptions {
   userUuid = ""; // 用户id(外部填充进来的id)
   beforeSendData = (data: any) => {}; // 及时上报前的hook
   afterSendData = (data: any) => {}; // 及时上报后的hook
-  isRecordScreen = false
+  isRecordScreen = false; // 默认关闭录屏
+  isHttpError = false;  // 默认不开启请求报错拦截
 
   constructor(initOptions: InitOptions) {
     this.optionsInit(initOptions);

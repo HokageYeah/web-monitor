@@ -20,9 +20,27 @@
     <el-button type="info" size="small" @click="xhrError"
       >xhr请求报错</el-button
     >
-    <el-button type="warning" size="small" @click="fetchError"
+    <el-button type="info" size="small" @click="onClickXhrGetError"
+      >xhr异常请求-get</el-button
+    >
+    <el-button type="info" size="small" @click="onClickXhrPostError">
+      xhr异常请求-post
+    </el-button>
+    <el-button type="danger" size="small" @click="fetchError"
       >fetch请求报错</el-button
     >
+    <el-button type="danger" size="small" @click="onClickFetchGetError">
+      Fetch异常请求-get
+    </el-button>
+    <el-button type="danger" size="small" @click="onClickFetchPostError">
+      Fetch异常请求-post
+    </el-button>
+    <el-button type="primary" size="small" @click="onClickAxiosError">
+      axios异常请求-get
+    </el-button>
+    <el-button type="primary" size="small" @click="onClickAxiosPostError">
+      axios异常请求-post
+    </el-button>
     <el-button type="success" size="small" @click="errorPlay()"
       >点击播放</el-button
     >
@@ -41,6 +59,7 @@
 import rrwebPlayer from "rrweb-player";
 import "rrweb-player/dist/style.css";
 import { ref, nextTick, onMounted } from "vue";
+import axios from "axios";
 import { unzipRecordScreen } from "@web-monitor/vue3";
 defineOptions({ name: "App" });
 const errDialogVisible = ref(false);
@@ -99,6 +118,29 @@ const xhrError = () => {
   ajax.send();
   ajax.addEventListener("loadend", () => {});
 };
+const onClickXhrGetError = () => {
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", "http://localhost:8080/api/getList2?test=123");
+  xhr.setRequestHeader("content-type", "application/json");
+  xhr.send();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      console.log("xhr-res", xhr.responseText);
+    }
+  };
+};
+const onClickXhrPostError = () => {
+  const body = { username: "example", password: "123456" };
+  const xhr = new XMLHttpRequest();
+  xhr.open("post", "http://localhost:8080/api/setList2");
+  xhr.setRequestHeader("content-type", "application/json");
+  xhr.send(JSON.stringify(body));
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      console.log("xhr-res", xhr.responseText);
+    }
+  };
+};
 const errorPlay = () => {
   // const screenList = getRecordEvent();
   const screenList: any = unzipRecordScreen(playPath.recordScreen);
@@ -156,6 +198,57 @@ const fetchError = () => {
     })
     .catch(() => {
       debugger;
+    });
+};
+
+const onClickFetchGetError = () => {
+  const params = new URLSearchParams();
+  params.append("page", "1");
+  params.append("limit", "10");
+
+  fetch(`http://localhost:8080/api/getList2?${params}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res)
+    .then((res) => {
+      console.log("featch-res", res);
+    });
+};
+const onClickFetchPostError = () => {
+  fetch("http://localhost:8080/api/setList2", {
+    method: "POST",
+    body: JSON.stringify({ test: "测试请求体" }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res)
+    .then((res) => {
+      console.log("featch-res", res);
+    });
+};
+
+const onClickAxiosError = () => {
+  axios
+    .get("http://localhost:8080/api/getList2", { params: { test: 123 } })
+    .then((res) => {
+      console.log("axios-res", res);
+    })
+    .catch((err) => {
+      console.log("axios-err", err);
+    });
+};
+const onClickAxiosPostError = () => {
+  axios
+    .post("http://localhost:8080/api/setList2", { test: 123 })
+    .then((res) => {
+      console.log("axios-res", res);
+    })
+    .catch((err) => {
+      console.log("axios-err", err);
     });
 };
 </script>

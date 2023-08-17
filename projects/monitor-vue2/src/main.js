@@ -10,6 +10,7 @@ Vue.use(webMonitor, {
   dsn: "http://localhost:8081/api/reportData",
   appName: "测试vue2",
   isRecordScreen: true,
+  isHttpError: true, 
   afterSendData: (data) => {
     console.log("vue2我是发送后的钩子函数回调了-----", data);
     // @ts-ignore

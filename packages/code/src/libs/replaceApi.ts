@@ -28,8 +28,10 @@ const replace = (key: EVENTTYPES) => {
       break;
     // 重写XMLHttpRequest
     case EVENTTYPES.XHROPEN:
+      XHROpenReplace(EVENTTYPES.XHROPEN);
       break;
     case EVENTTYPES.XHRSEND:
+      XHRSendfetchReplace(EVENTTYPES.XHRSEND);
       break;
     default:
       break;
@@ -69,22 +71,75 @@ const listenEunhandledrejection = (type: EVENTTYPES) => {
  * 重写fetch，添加拦截
  */
 function fetchReplace(type: EVENTTYPES) {
-  // const originFetch = _global.fetch;
-  // _global.fetch = function (...args) {
-  //   const startTime = getTimestamp();
-  //   const promise = originFetch.apply(this, args);
-  //   const event = {
-  //     type,
-  //     target: promise,
-  //     request: {
-  //       startTime,
-  //       method: args[0].method,
-  //       url: args[0].url,
-  //     },
-  //   };
-  //   eventBus.publishSubscribe(type, event);
-  //   return promise;
-  // };
+  if (typeof _global.fetch == "undefined") return;
+  debugger;
+  const originFetch = _global.fetch;
+  _global.fetch = function (...args) {
+    debugger;
+    const startTime = getTimestamp();
+    const promise = originFetch.apply(this, args).then((res: any) => {
+      debugger;
+      eventBus.publishSubscribe(type, ...args, res, startTime);
+      return res;
+    });
+    // debugger
+    // const event = {
+    //   type,
+    //   target: promise,
+    //   request: {
+    //     startTime,
+    //     method: args[0].method,
+    //     url: args[0].url,
+    //   },
+    // };
+    // debugger
+    // eventBus.publishSubscribe(type, event);
+    return promise;
+  };
+}
+
+/**
+ * 重写XHR-open，添加拦截
+ */
+function XHROpenReplace(type: EVENTTYPES) {
+  debugger;
+  if (typeof _global.XMLHttpRequest == "undefined") return;
+  const originOpen = XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open = function (...args: any[]) {
+    debugger;
+    const startTime = getTimestamp();
+    // this.addEventListener("load", () => {
+    //   debugger;
+    //   eventBus.publishSubscribe(type, this, ...args, startTime);
+    // });
+    eventBus.publishSubscribe(type, this, ...args, startTime);
+    originOpen.apply(this, args as any);
+  };
+}
+
+/**
+ * 重写XHR-send，添加拦截
+ */
+function XHRSendfetchReplace(type: EVENTTYPES) {
+  debugger;
+  if (typeof _global.XMLHttpRequest == "undefined") return;
+  const originSend = XMLHttpRequest.prototype.send;
+  XMLHttpRequest.prototype.send = function (...args) {
+    debugger;
+    eventBus.publishSubscribe(type, this, ...args);
+    // eventBus.publishSubscribe(type, this, ...args, startTime);
+    // this.addEventListener("error", (error) => {
+    //   debugger;
+    //   console.log(error);
+    //   eventBus.publishSubscribe(type, this, ...args, startTime);
+    // });
+    // this.onerror = function (error) {
+    //   debugger;
+    //   // 在这里添加处理请求报错的逻辑
+    //   console.error("XMLHttpRequest 请求报错", error);
+    // };
+    originSend.apply(this, args);
+  };
 }
 
 export { initReplace };
