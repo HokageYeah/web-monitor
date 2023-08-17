@@ -7,6 +7,21 @@ export class TransportData {
   private send(url: string, data: any) {
     return new Promise((resolve, reject) => {
       debugger;
+      console.log(this);
+      const httpXhrPost = (url: string, data: any) => {
+        debugger;
+        console.log(this);
+        this.xhrPost(url, data)
+          .then((res) => {
+            console.log("xhr--------", res);
+            // 处理返回的数据
+            resolve({ sendType: "xhr", success: true });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      };
+      debugger;
       const isOverSize = isObjectOverSize(data, 64);
       console.log("isOverSize----", isOverSize);
       let sendType = 1;
@@ -15,22 +30,24 @@ export class TransportData {
       } else {
         sendType = isOverSize ? 3 : 2;
       }
+      debugger;
       switch (sendType) {
         case 1:
           // sendBeacon 最大64kb
-          resolve({ sendType: "sendBeacon", success: sendByBeacon(url, data) });
+          // 判断如果 sendBeacon请求不成功使用fetch去请求。
+          // （如果处于危险的网络环境，或者开启了广告屏蔽插件 此请求将无效）
+          // 如果成功进入浏览器的发送队列后，会返回true；如果受到队列总数、数据大小的限制后，会返回false。
+          // 返回ture后，只是表示进入了发送队列，浏览器会尽力保证发送成功，但是否成功了，无法判断。
+          const value = sendByBeacon(url, data);
+          if (value) {
+            resolve({ sendType: "sendBeacon", success: value });
+          } else {
+            httpXhrPost(url, data);
+          }
           break;
         case 3:
           // xhr
-          this.xhrPost(url, data)
-            .then((res) => {
-              console.log('xhr--------',res);
-              // 处理返回的数据
-              resolve({ sendType: "xhr", success: true });
-            })
-            .catch((error) => {
-              console.error(error);
-            });
+          httpXhrPost(url, data);
           break;
 
         default:
@@ -39,7 +56,7 @@ export class TransportData {
     });
   }
 
-  private  xhrPost(url: string, data: any): Promise<Response> {
+  private xhrPost(url: string, data: any): Promise<Response> {
     return fetch(url, {
       method: "POST",
       body: JSON.stringify(data),
