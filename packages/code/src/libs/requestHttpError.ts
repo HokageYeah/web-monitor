@@ -39,9 +39,14 @@ const initReplaceFetch = () => {
           responseStatus: status,
           requestMethod,
           requestType: "fetch",
-          requestParams: requestMethod == "post" ? body : JSON.stringify(getGetParams(url)),
+          requestParams:
+            requestMethod == "post" ? body : JSON.stringify(getGetParams(url)),
         };
-        triggerError(event);
+        // 如果上报接口出错，不进行过滤的话会出现请求死循环
+        if (url !== options.dsn) {
+          debugger;
+          triggerError(event);
+        }
       }
     },
   });
@@ -128,7 +133,10 @@ const initReplaceXHR = () => {
                   ? body
                   : requestConfig.requestParams,
             };
-            triggerError(event);
+            if (requestUrl !== options.dsn) {
+              debugger;
+              triggerError(event);
+            }
           }
         }
       });

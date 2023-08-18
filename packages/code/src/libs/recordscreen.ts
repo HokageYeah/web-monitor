@@ -3,6 +3,7 @@ import { RecordEventScope } from "../types/options";
 import { getTimestamp } from "../utils";
 import pako from "pako";
 import { Base64 } from "js-base64";
+import { options } from "./options";
 
 const MAXSCOPETIME = 5000; // 每5s记录一个区间
 const MAXSCOPELENGTH = 3; // 录屏数组最长长度 - 不要小于3
@@ -39,6 +40,7 @@ export class RecordScreen {
 }
 let recordscreenList: RecordEventScope[];
 const initRecordScreen = () => {
+  if (!options.isRecordScreen) return;
   recordscreenList = new RecordScreen().eventList;
 };
 

@@ -36,6 +36,6 @@
   "author": "HokageYeah  <https://github.com/HokageYeah>",
   "license": "ISC",
   "dependencies": {
-    "@web-monitor/code": "^1.0.0"
+    "@web-monitor/code": "workspace:^"
   }
 }

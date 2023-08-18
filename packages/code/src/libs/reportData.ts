@@ -14,8 +14,12 @@ export class TransportData {
         this.xhrPost(url, data)
           .then((res) => {
             console.log("xhr--------", res);
-            // 处理返回的数据
-            resolve({ sendType: "xhr", success: true });
+            debugger
+            // 如果上报接口出错，不进行过滤的话会出现请求死循环
+            if (res.status == 200 || res.status == 304) {
+              // 处理返回的数据
+              resolve({ sendType: "xhr", success: true });
+            }
           })
           .catch((error) => {
             console.error(error);
