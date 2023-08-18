@@ -1,19 +1,10 @@
 <div align="center">
     <h1>web-monitor 前端监控插件</h1>
     <p>
-    为前端项目提供【"异常"、"前端异常采集"、（一期）】监控
+    为前端项目提供【"异常"、"前端异常采集"、（一期）】监控 -vue2
    </p>
 </div>
 
-## 运行
-```
-pnpm install
-<!-- vue2 -->
-pnpm -F monitor-vue2 serve 
-或者：pnpm -F monitor-vue2 start 
-<!-- vue3 -->
-pnpm -F monitor-vue3 start 
-```
 
 ## 说明
 >  ### 1、插件入参说明：

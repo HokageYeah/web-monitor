@@ -33,7 +33,7 @@ const initReplaceFetch = () => {
       if (status !== 200 && status !== 304 && status !== 204) {
         const event = {
           eventId: SENDID.SERVER,
-          errorType: type,
+          eventType: type,
           errMessage: statusText,
           requestUrl: url,
           responseStatus: status,
@@ -116,7 +116,7 @@ const initReplaceXHR = () => {
           if (status !== 200 && status !== 304 && status !== 204) {
             const event = {
               eventId: SENDID.SERVER,
-              errorType: responseType,
+              eventType: responseType,
               errMessage: statusText || responseText,
               requestUrl,
               responseStatus: status,

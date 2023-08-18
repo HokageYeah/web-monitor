@@ -10,14 +10,21 @@ import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
 import dts from "rollup-plugin-dts";
 import { uglify } from "rollup-plugin-uglify";
-import nodeResolve from '@rollup/plugin-node-resolve'
-import esbuild from 'rollup-plugin-esbuild'
+import nodeResolve from "@rollup/plugin-node-resolve";
+import esbuild from "rollup-plugin-esbuild";
+import { terser } from "rollup-plugin-terser";
 
-const esbuildPlugin = esbuild({ target: 'esnext' })
+const esbuildPlugin = esbuild({ target: "esnext" });
+const terserPlugin = terser({
+  compress: {
+    drop_console: true, // 移除 console.log 语句
+    drop_debugger: true, // 移除 debugger 语句
+  },
+});
 
 console.log(packageDir);
 console.log(packageFiles);
-console.log('-------------uglify', uglify);
+console.log("-------------uglify", uglify);
 
 const options = (path: string) => {
   return [
@@ -61,7 +68,8 @@ const options = (path: string) => {
         commonjs(),
         nodeResolve(),
         json(),
-        esbuildPlugin
+        esbuildPlugin,
+        terserPlugin
       ],
     },
     {
@@ -82,12 +90,6 @@ configs = packageFiles.map((pathName) => options(pathName)).flat();
 console.log("查看----", configs);
 
 export default configs;
-
-
-
-
-
-
 
 // import esbuild from 'rollup-plugin-esbuild'
 // import dts from 'rollup-plugin-dts'
@@ -203,4 +205,3 @@ export default configs;
 // }
 
 // export default configs
-

@@ -5,15 +5,6 @@
    </p>
 </div>
 
-## 运行
-```
-pnpm install
-<!-- vue2 -->
-pnpm -F monitor-vue2 serve 
-或者：pnpm -F monitor-vue2 start 
-<!-- vue3 -->
-pnpm -F monitor-vue3 start 
-```
 
 ## 说明
 >  ### 1、插件入参说明：

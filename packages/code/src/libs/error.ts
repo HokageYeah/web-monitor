@@ -210,7 +210,7 @@ function emitError(errorInfo: any): void {
   let info = {
     ...errorInfo,
     userUuid: options.userUuid,
-    errorType: SEDNEVENTTYPES.ERROR,
+    eventType: SEDNEVENTTYPES.ERROR,
     triggerPageUrl: getLocationHref(),
     triggerTime: getTimestamp(),
   };
