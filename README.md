@@ -57,7 +57,7 @@ pnpm -F monitor-vue3 start
   | initiatorType  | string | img/video                           | 通过某种方式请求的资源                |
   | eventType      | string | error                               | 事件类型                              |
   | requestUrl     | string | 如："https://www.baidu.com/as.webp" | 请求资源具体url                       |
-  | eventId        | string | code                                | 错误事件ID。此时为code                |
+  | eventId        | string | resource                                | 错误事件ID。此时为code                |
   | errMessage     | string |                                     | 报错信息                              |
   | triggerPageUrl | string |                                     | 报错页面URL                           |
   | userUuid       | string |                                     | 用户id（没有则为空）                  |
