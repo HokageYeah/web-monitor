@@ -34,7 +34,8 @@ const parseErrorEvent = (event: ErrorEvent | PromiseRejectedResult) => {
         initiatorType: htmlTarget.nodeName.toLowerCase(),
         eventId: SENDID.RESOURCE,
         requestUrl: "",
-        time: getTimestamp(),
+        triggerTime: getTimestamp(),
+        errMessage: "资源加载失败"
       };
       switch (htmlTarget.nodeName.toLowerCase()) {
         case "link":
@@ -208,10 +209,12 @@ const initError = () => {
 function emitError(errorInfo: any): void {
   let info = {
     ...errorInfo,
+    userUuid: options.userUuid,
     errorType: SEDNEVENTTYPES.ERROR,
     triggerPageUrl: getLocationHref(),
     triggerTime: getTimestamp(),
   };
+  debugger
   if (options.isRecordScreen) {
     info = { ...info, recordScreen: zip(getRecordEvent()) };
   }

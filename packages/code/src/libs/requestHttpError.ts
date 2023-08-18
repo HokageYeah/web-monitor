@@ -30,7 +30,7 @@ const initReplaceFetch = () => {
       //  转换成小写
       const requestMethod = String(method)?.toLocaleLowerCase();
       //   如果状态status没有返回200、或者304缓存 则认为报错了ttp状态码，则不记录
-      if (status !== 200 && status !== 304) {
+      if (status !== 200 && status !== 304 && status !== 204) {
         const event = {
           eventId: SENDID.SERVER,
           errorType: type,
@@ -39,8 +39,7 @@ const initReplaceFetch = () => {
           responseStatus: status,
           requestMethod,
           requestType: "fetch",
-          requestParams: requestMethod == "post" ? body : getGetParams(url),
-          startTime,
+          requestParams: requestMethod == "post" ? body : JSON.stringify(getGetParams(url)),
         };
         triggerError(event);
       }
@@ -51,14 +50,14 @@ const initReplaceFetch = () => {
 interface RequestOptionsType {
   url: string;
   method: string;
-  requestParams?: object;
+  requestParams?: string;
   triggerTime?: number; // 请求发生时间
 }
 
 class RequestOptions implements RequestOptionsType {
   url: string = "";
   method: string = "";
-  requestParams?: object = {};
+  requestParams?: string = "";
   triggerTime?: number = -1;
   constructor(options = {}) {
     Object.keys(options).forEach((element) => {
@@ -87,7 +86,7 @@ const initReplaceXHR = () => {
       console.log(startTime);
       requestConfig.url = url;
       requestConfig.method = String(method).toLocaleLowerCase();
-      requestConfig.requestParams = getGetParams(url);
+      requestConfig.requestParams = JSON.stringify(getGetParams(url));
     },
   });
   eventBus.addSubscribe({
@@ -100,7 +99,6 @@ const initReplaceXHR = () => {
       // 监听readyState变成4的完成情况
       on(that, EVENTTYPES.READYSTATECHANGE, () => {
         if (that.readyState === 4) {
-          const startTime = getTimestamp();
           const {
             response,
             responseText,
@@ -115,7 +113,7 @@ const initReplaceXHR = () => {
           debugger;
           console.log(that);
           //   如果状态status没有返回200、或者304缓存 则认为报错了ttp状态码，则不记录
-          if (status !== 200 && status !== 304) {
+          if (status !== 200 && status !== 304 && status !== 204) {
             const event = {
               eventId: SENDID.SERVER,
               errorType: responseType,
@@ -129,7 +127,6 @@ const initReplaceXHR = () => {
                 requestConfig.method == "post"
                   ? body
                   : requestConfig.requestParams,
-              startTime,
             };
             triggerError(event);
           }

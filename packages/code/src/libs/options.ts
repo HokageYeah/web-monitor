@@ -55,6 +55,7 @@ const validateInitOption = (options: InitOptions) => {
     validateOption(appName, "appName", "string"),
     validateOption(appVersion, "appVersion", "string"),
     validateOption(appCode, "appCode", "string"),
+    validateOption(userUuid, "userUuid", "string"),
   ];
   return validateList.every((item) => !!item);
 };

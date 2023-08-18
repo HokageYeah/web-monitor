@@ -1,7 +1,7 @@
 import { variableTypeDetection } from "./verifyType";
 
 export const resourceTransform = (str: string): string => {
-  const instr = interceptStr(str, 120) + "; 资源加载失败";
+  const instr = interceptStr(str, 120);
   return instr;
 };
 

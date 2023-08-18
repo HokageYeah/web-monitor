@@ -60,7 +60,7 @@ import rrwebPlayer from "rrweb-player";
 import "rrweb-player/dist/style.css";
 import { ref, nextTick, onMounted } from "vue";
 import axios from "axios";
-import { unzipRecordScreen } from "@web-monitor/vue3";
+import { unzipRecordScreen, setUserUuid } from "@web-monitor/vue3";
 defineOptions({ name: "App" });
 const errDialogVisible = ref(false);
 const recordscreen = ref(null);
@@ -70,6 +70,7 @@ let playPath: any;
 onMounted(() => {
   // @ts-ignore
   window.getAllMonitorList = getAllMonitorList;
+  setUserUuid('123')
 });
 
 const codeError = () => {

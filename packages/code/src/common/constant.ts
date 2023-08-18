@@ -11,9 +11,9 @@ export enum EVENTTYPES {
   FETCH = "fetch",
   XHROPEN = "xhr-open",
   XHRSEND = "xhr-send",
-  HASHCHANGE = "hashchange",
-  HISTORYPUSHSTATE = "history-pushState",
-  HISTORYREPLACESTATE = "history-replaceState",
+  HASHCHANGE = "hashchange", // hash 路由监听
+  HISTORYPUSHSTATE = "history-pushState", //history-pushState 路由事件
+  HISTORYREPLACESTATE = "history-replaceState", // history-replaceState 路由替换事件
   POPSTATE = "popstate",
   READYSTATECHANGE = "readystatechange",
   ONLINE = "online",

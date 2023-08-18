@@ -1,6 +1,7 @@
 // 向外暴露的方法
 
 import { emitError } from "./error";
+import { options } from "./options";
 import { unzip } from "./recordscreen";
 
 /**
@@ -9,7 +10,6 @@ import { unzip } from "./recordscreen";
 export function unzipRecordScreen(recordscreen: string) {
   return unzip(recordscreen);
 }
-
 
 /**
  * vue2中解决vue拦截错误的暴露方法
@@ -20,5 +20,22 @@ export function unzipRecordScreen(recordscreen: string) {
  */
 
 export function triggerError(options: any) {
-    emitError(options);
+  emitError(options);
+}
+
+/**
+ * 设置用户id
+ * @param id 用户id
+ */
+
+export function setUserUuid(userid: string) {
+  options.userUuid = userid;
+}
+
+/**
+ * 获取设置用户id
+ * @param id 用户id
+ */
+export function getUserUuid(userid: string) {
+  return options.userUuid;
 }

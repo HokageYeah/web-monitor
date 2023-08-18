@@ -1,6 +1,6 @@
 {
   "name": "@web-monitor/vue3",
-  "version": "1.0.0-beta.5",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/index.cjs",
   "module": "dist/index.esm.js",
@@ -20,13 +20,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
+    "异常",
     "埋点",
     "性能",
-    "异常",
     "性能采集",
     "异常采集",
     "前端埋点",
-    "前端性能采集"
+    "前端性能采集",
+    "前端异常采集"
   ],
   "repository": {
     "type": "git",
@@ -35,6 +36,6 @@
   "author": "HokageYeah  <https://github.com/HokageYeah>",
   "license": "ISC",
   "dependencies": {
-    "@web-monitor/code": "workspace:^1.0.0"
+    "@web-monitor/code": "^1.0.0"
   }
 }

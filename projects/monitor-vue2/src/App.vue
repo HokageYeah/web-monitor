@@ -59,7 +59,7 @@
 <script>
 import rrwebPlayer from "rrweb-player";
 import "rrweb-player/dist/style.css";
-import { unzipRecordScreen } from "@web-monitor/vue2";
+import { unzipRecordScreen, setUserUuid } from "@web-monitor/vue2";
 import axios from "axios";
 export default {
   name: "App",
@@ -72,6 +72,7 @@ export default {
   },
   mounted() {
     window.getAllMonitorList = this.getAllMonitorList;
+    setUserUuid('456')
   },
   methods: {
     codeError() {
