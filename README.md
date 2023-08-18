@@ -1,4 +1,4 @@
-<div style="text-align: center;">
+<div align="center">
     <h1>web-monitor 前端监控插件</h1>
     <p>
     为前端项目提供【"异常"、"前端异常采集"、（一期）】监控
