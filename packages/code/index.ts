@@ -1,4 +1,4 @@
-import { SENDID } from "./src/common/constant";
+import { SENDCODE } from "./src/common/constant";
 import { initError, parseError } from "./src/libs/error";
 import * as allExportMethods from "./src/libs/exportAllMethods";
 import { initOptions } from "./src/libs/options";
@@ -47,7 +47,7 @@ export {
   InitOptions,
   init,
   getRecordEvent,
-  SENDID,
+  SENDCODE,
   parseError,
   allExportMethods,
 };

@@ -1,12 +1,13 @@
 {
   "name": "@web-monitor/code",
-  "version": "1.0.0",
+  "version": "1.0.0-beta.2",
   "description": "前端项目提供【 异常、前端异常采集、行为、性能、请求、资源、路由、曝光 】监控手段",
   "main": "dist/index.cjs",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "exports": {
     ".": {

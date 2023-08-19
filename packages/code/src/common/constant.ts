@@ -36,9 +36,9 @@ export enum SEDNEVENTTYPES {
 }
 
 /**
- * 触发的事件id - eventID
+ * 触发的事件编码 - eventCode
  */
-export enum SENDID {
+export enum SENDCODE {
   PAGE = "page", // 页面
   RESOURCE = "resource", // 资源
   SERVER = "server", // 请求

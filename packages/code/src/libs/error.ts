@@ -1,4 +1,4 @@
-import { EVENTTYPES, SEDNEVENTTYPES, SENDID } from "../common/constant";
+import { EVENTTYPES, SEDNEVENTTYPES, SENDCODE } from "../common/constant";
 import { filter, getLocationHref, getTimestamp, isType, map } from "../utils";
 import { _global } from "../utils/global";
 import { resourceTransform } from "../utils/transformData";
@@ -21,7 +21,7 @@ const isPromiseRejectedResult = (
 const parseErrorEvent = (event: ErrorEvent | PromiseRejectedResult) => {
   // promise reject 错误
   if (isPromiseRejectedResult(event)) {
-    return { eventId: SENDID.CODE, ...parseError(event.reason) };
+    return { eventCode: SENDCODE.CODE, ...parseError(event.reason) };
   }
   const { target } = event;
   if (target instanceof HTMLElement) {
@@ -32,7 +32,7 @@ const parseErrorEvent = (event: ErrorEvent | PromiseRejectedResult) => {
     if (htmlTarget.nodeType == 1) {
       const result = {
         initiatorType: htmlTarget.nodeName.toLowerCase(),
-        eventId: SENDID.RESOURCE,
+        eventCode: SENDCODE.RESOURCE,
         requestUrl: "",
         triggerTime: getTimestamp(),
         errMessage: "资源加载失败"
@@ -63,7 +63,7 @@ const parseErrorEvent = (event: ErrorEvent | PromiseRejectedResult) => {
     e.columnNumber = e.colno || event.colno;
     e.lineNumber = e.lineno || event.lineno;
     return {
-      eventId: SENDID.CODE,
+      eventCode: SENDCODE.CODE,
       ...parseError(!target ? event : e),
     };
   }
@@ -71,7 +71,7 @@ const parseErrorEvent = (event: ErrorEvent | PromiseRejectedResult) => {
   // 兜底
   // ie9版本,从全局的event对象中获取错误信息
   return {
-    eventId: SENDID.CODE,
+    eventCode: SENDCODE.CODE,
     line: (_global as any).event.errorLine,
     col: (_global as any).event.errorCharacter,
     errMessage: (_global as any).event.errorMessage,
@@ -95,7 +95,7 @@ interface ErrorStack {
  */
 function parseStack(err: Error): ErrorStack {
   const { stack = "", message = "" } = err;
-  const result = { eventId: SENDID.CODE, errMessage: message, errStack: stack };
+  const result = { eventCode: SENDCODE.CODE, errMessage: message, errStack: stack };
 
   if (stack) {
     const rChromeCallStack = /^\s*at\s*([^(]+)\s*\((.+?):(\d+):(\d+)\)$/;
@@ -153,7 +153,7 @@ const parseError = (e: any) => {
       return {
         errMessage: message,
         errStack: stack,
-        eventId: SENDID.CODE,
+        eventCode: SENDCODE.CODE,
         line: lineNumber, // 不稳定属性 - 在某些浏览器可能是undefined，被废弃了
         col: columnNumber, // 不稳定属性 - 非标准，有些浏览器可能不支持
         triggerPageUrl: fileName, // 不稳定属性 - 非标准，有些浏览器可能不支持
@@ -164,11 +164,11 @@ const parseError = (e: any) => {
   if (e.message) return parseStack(e);
 
   // reject 错误
-  if (typeof e === "string") return { eventId: SENDID.REJECT, errMessage: e };
+  if (typeof e === "string") return { eventCode: SENDCODE.REJECT, errMessage: e };
 
   // console.error 暴露的错误
   if (variableTypeDetection.isArray(e))
-    return { eventId: SENDID.CONSOLEERROR, errMessage: e.join(";") };
+    return { eventCode: SENDCODE.CONSOLEERROR, errMessage: e.join(";") };
 
   return {};
 };
@@ -209,7 +209,7 @@ const initError = () => {
 function emitError(errorInfo: any): void {
   let info = {
     ...errorInfo,
-    userUuid: options.userUuid,
+    userId: options.userId,
     eventType: SEDNEVENTTYPES.ERROR,
     triggerPageUrl: getLocationHref(),
     triggerTime: getTimestamp(),

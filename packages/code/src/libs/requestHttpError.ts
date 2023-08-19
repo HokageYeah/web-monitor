@@ -1,4 +1,4 @@
-import { EVENTTYPES, SENDID } from "../common/constant";
+import { EVENTTYPES, SENDCODE } from "../common/constant";
 import { getGetParams, getTimestamp, isObjValidKey, on } from "../utils";
 import { eventBus } from "./eventBus";
 import { triggerError } from "./exportAllMethods";
@@ -32,7 +32,7 @@ const initReplaceFetch = () => {
       //   如果状态status没有返回200、或者304缓存 则认为报错了ttp状态码，则不记录
       if (status !== 200 && status !== 304 && status !== 204) {
         const event = {
-          eventId: SENDID.SERVER,
+          eventCode: SENDCODE.SERVER,
           eventType: type,
           errMessage: statusText,
           requestUrl: url,
@@ -120,7 +120,7 @@ const initReplaceXHR = () => {
           //   如果状态status没有返回200、或者304缓存 则认为报错了ttp状态码，则不记录
           if (status !== 200 && status !== 304 && status !== 204) {
             const event = {
-              eventId: SENDID.SERVER,
+              eventCode: SENDCODE.SERVER,
               eventType: responseType,
               errMessage: statusText || responseText,
               requestUrl,

@@ -9,7 +9,7 @@ export class Options implements InitOptions {
   appName = ""; // 应用名称
   appCode = ""; // 应用code
   appVersion = ""; // 应用版本
-  userUuid = ""; // 用户id(外部填充进来的id)
+  userId = ""; // 用户id(外部填充进来的id)
   beforeSendData = (data: any) => {}; // 及时上报前的hook
   afterSendData = (data: any) => {}; // 及时上报后的hook
   isRecordScreen = false; // 默认关闭录屏
@@ -49,13 +49,13 @@ const validateOptionMustFill = (target: any, targetName: string) => {
 };
 // 教研
 const validateInitOption = (options: InitOptions) => {
-  const { dsn, appName, appVersion, appCode, userUuid } = options;
+  const { dsn, appName, appVersion, appCode, userId } = options;
   const validateList = [
     validateOption(dsn, "dsn", "string"),
     validateOption(appName, "appName", "string"),
     validateOption(appVersion, "appVersion", "string"),
     validateOption(appCode, "appCode", "string"),
-    validateOption(userUuid, "userUuid", "string"),
+    validateOption(userId, "userId", "string"),
   ];
   return validateList.every((item) => !!item);
 };

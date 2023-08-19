@@ -5,7 +5,9 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:rollup": "cross-env NODE_ENV=produaction  rollup -c"
+    "build:rollup": "cross-env NODE_ENV=produaction  rollup -c",
+    "publish:private": "bash ./scripts/publish-npm.sh  http://localhost:4873/",
+    "publish:public": "bash ./scripts/publish-npm.sh"
   },
   "keywords": [],
   "author": "",

@@ -9,7 +9,7 @@ export interface InitOptions {
   appName: string; // 应用名称
   appCode?: string; // 应用code
   appVersion?: string; // 应用版本
-  userUuid?: string; // 用户id(外部填充进来的id)
+  userId?: string; // 用户id(外部填充进来的id)
   isRecordScreen?: boolean; // 是否开启录屏
   isHttpError?: boolean; // 是否开启请求报错拦截。
   beforeSendData?: (data: any)=>void; // 上报数据前的 回调hook

@@ -1,4 +1,4 @@
-import { InitOptions, SENDID, init, parseError, triggerError } from "@web-monitor/code";
+import { InitOptions, SENDCODE, init, parseError, triggerError } from "@web-monitor/code";
 
 function install(Vue: any, options: InitOptions) {
   // 全局错误处理器
@@ -9,7 +9,7 @@ function install(Vue: any, options: InitOptions) {
     // console.error("Error---:", err);
     // console.error("Component---:", vm);
     // console.error("Info:---", info);
-    const errorInfo = { eventId: SENDID.CODE, ...parseError(err) };
+    const errorInfo = { eventCode: SENDCODE.CODE, ...parseError(err) };
     triggerError(errorInfo)
     // console.error("errorInfo:---", errorInfo);
     // 执行之前保存的全局错误处理函数 handler
