@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:rollup": "cross-env NODE_ENV=produaction  rollup -c",
-    "publishm:privatem": "bash ./scripts/publish-npm.sh  http://localhost:4873/",
+    "publishm:private": "bash ./scripts/publish-npm.sh  http://localhost:4873/",
     "publishm:public": "bash ./scripts/publish-npm.sh",
     "publishw:private": "powershell ./scripts/publish-npm.ps1 http://localhost:4873/",
     "publishw:public": "powershell ./scripts/publish-npm.ps1"

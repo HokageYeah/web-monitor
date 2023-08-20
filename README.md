@@ -13,6 +13,18 @@ pnpm -F monitor-vue2 serve
 或者：pnpm -F monitor-vue2 start 
 <!-- vue3 -->
 pnpm -F monitor-vue3 start 
+
+<!-- 打包 -->
+pnpm run  build:rollup
+
+<!-- Mac 上传到npm -->
+pnpm run publishm:private <npm私服：服务器根据自己本地配置>
+pnpm run publishm:public <npm公网>
+
+
+<!-- Windows 上传到npm -->
+pnpm run publishw:private <npm私服：服务器根据自己本地配置>
+pnpm run publishw:public <npm公网>
 ```
 
 ## 说明
