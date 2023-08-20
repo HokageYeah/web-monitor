@@ -23,14 +23,8 @@ foreach ($folder in $folders) {
     Set-Location $folder.FullName
 
     echo  $registry
-    if ($args.Count -eq 0) {
-         # # 发布 package 到 npm
-        npm publish
-    }
-    else {
-        # # 发布 package 到 npm
-        npm publish --access public --registry $registry
-    }
+    
+    npm publish --access public --registry $registry
 
     if ($LASTEXITCODE -eq 0) {
         Write-Output "--------------$folderName published successfully!--------------"
