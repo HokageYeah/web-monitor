@@ -65,7 +65,7 @@ export class TransportData {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "text/plain;charset=UTF-8",
       },
     });
   }
