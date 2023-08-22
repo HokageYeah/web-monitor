@@ -37,10 +37,12 @@
   "author": "HokageYeah  <https://github.com/HokageYeah>",
   "license": "MIT",
   "dependencies": {
+    "@types/ua-parser-js": "^0.7.36",
     "error-stack-parser": "^2.1.4",
     "js-base64": "^3.7.5",
     "pako": "^2.1.0",
-    "rrweb": "2.0.0-alpha.4"
+    "rrweb": "2.0.0-alpha.4",
+    "ua-parser-js": "^1.0.35"
   },
   "devDependencies": {
     "@types/pako": "^2.0.0"

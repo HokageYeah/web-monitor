@@ -46,7 +46,7 @@ export class TransportData {
       if (_global.navigator) {
         sendType = isOverSize64 ? 3 : 1;
       } else {
-        sendType = isOverSize64 ? 3 : 2;
+        sendType = isOverSize2 ? 3 : 2;
       }
       debugger;
       switch (sendType) {
@@ -112,8 +112,8 @@ export class TransportData {
 
     // this.events还有值说明发送的事件超过了阈值(cacheMaxLength)
     // 那么这些经过裁剪的事件列表剩下的会直接发，并不会延迟等到下一个队列
-    if(this.events.length) {
-      sendNextTick(this.listSend.bind(this))
+    if (this.events.length) {
+      sendNextTick(this.listSend.bind(this));
     }
   }
 
@@ -146,11 +146,11 @@ export class TransportData {
       this.listSend();
     } else {
       // 宏任务队列延迟运行
-      this.timeoutID = setTimeout(() => {
-        debugger;
-        console.log("--------查看么timeoutID--", this.events);
-        this.listSend.call(this);
-      }, options.cacheWatingTime);
+      console.log("--------查看么我改变了timeoutID--", this.events);
+      this.timeoutID = setTimeout(
+        this.listSend.bind(this),
+        options.cacheWatingTime
+      );
     }
 
     // options.beforeSendData(e);

@@ -11,7 +11,7 @@ app.use(ElementPlus);
 app.use(webMonitor, {
   dsn: "http://localhost:8080/api/reportData",
   appName: "测试vue3",
-  isRecordScreen: false,
+  isRecordScreen: true,
   isHttpError: true,
   cacheWatingTime: 0,
   afterSendData: (data: any) => {

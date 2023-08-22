@@ -1,6 +1,6 @@
 import { EVENTTYPES, SEDNEVENTTYPES, SENDCODE } from "../common/constant";
 import { filter, getLocationHref, getTimestamp, isType, map } from "../utils";
-import { _global } from "../utils/global";
+import { _global, _support } from "../utils/global";
 import { resourceTransform } from "../utils/transformData";
 import { variableTypeDetection } from "../utils/verifyType";
 import { eventBus } from "./eventBus";
@@ -213,6 +213,7 @@ function emitError(errorInfo: any): void {
     eventType: SEDNEVENTTYPES.ERROR,
     triggerPageUrl: getLocationHref(),
     triggerTime: getTimestamp(),
+    deviceInfo: _support.deviceInfo, // 获取设备信息
   };
   debugger
   if (options.isRecordScreen) {
