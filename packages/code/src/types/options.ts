@@ -1,4 +1,5 @@
 import { EventBus } from "../libs/eventBus";
+import { NetStatus } from "../libs/net-status";
 
 interface Pv {
   core?: boolean; // 是否发送页面跳转相关数据
@@ -12,8 +13,10 @@ export interface InitOptions {
   userId?: string; // 用户id(外部填充进来的id)
   isRecordScreen?: boolean; // 是否开启录屏
   isHttpError?: boolean; // 是否开启请求报错拦截。
-  beforeSendData?: (data: any)=>void; // 上报数据前的 回调hook
+  beforeSendData?: (data: any)=>any; // 上报数据前的 回调hook
   afterSendData?: (data: any)=>void; // 上报数据后的 回调hook
+  cacheMaxLength?: number // 上报数据最大缓存数
+  cacheWatingTime?: number // 上报数据最大等待时间
 }
 
 export interface RecordEventScope {
@@ -33,4 +36,5 @@ export interface WebMonitor {
   yeahasdsd: string;
   transportData: any;
   options: InitOptions,
+  netStatus: NetStatus
 }

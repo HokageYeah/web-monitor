@@ -110,11 +110,11 @@ function handlePostRequest(req, res, path) {
   req.on("end", () => {
     try {
       const data = JSON.parse(body);
-      console.log("查看post请求----", data);
+      // console.log("查看post请求----", data);
       switch (path) {
         case "/api/reportData":
           console.log("发送消息~~~");
-          allMonitorList.push(data);
+          allMonitorList.push(...data.eventInfo);
           res.end(
             JSON.stringify({
               meaage: "上报成功！",

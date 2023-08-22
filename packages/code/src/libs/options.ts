@@ -13,7 +13,13 @@ export class Options implements InitOptions {
   beforeSendData = (data: any) => {}; // 及时上报前的hook
   afterSendData = (data: any) => {}; // 及时上报后的hook
   isRecordScreen = false; // 默认关闭录屏
-  isHttpError = false;  // 默认不开启请求报错拦截
+  isHttpError = false; // 默认不开启请求报错拦截
+  cacheMaxLength = 5; // 上报数据最大缓存数
+  cacheWatingTime = 5000; // 上报数据最大等待时间
+  // 数据上报前的 hook
+  beforeSendDataList: any[] = [];
+  // 数据上报后的 hook
+  afterSendDataList: any[] = [];
 
   constructor(initOptions: InitOptions) {
     this.optionsInit(initOptions);
@@ -23,6 +29,13 @@ export class Options implements InitOptions {
     debugger;
     for (const [key, value] of Object.entries(options)) {
       (this as any)[key] = value;
+    }
+    const { beforeSendData, afterSendData } = options;
+    if (beforeSendData) {
+      this.beforeSendDataList = [this.beforeSendData];
+    }
+    if (afterSendData) {
+      this.afterSendDataList = [this.afterSendData];
     }
   }
 }
@@ -49,13 +62,23 @@ const validateOptionMustFill = (target: any, targetName: string) => {
 };
 // 教研
 const validateInitOption = (options: InitOptions) => {
-  const { dsn, appName, appVersion, appCode, userId } = options;
+  const {
+    dsn,
+    appName,
+    appVersion,
+    appCode,
+    userId,
+    beforeSendData,
+    afterSendData,
+  } = options;
   const validateList = [
     validateOption(dsn, "dsn", "string"),
     validateOption(appName, "appName", "string"),
     validateOption(appVersion, "appVersion", "string"),
     validateOption(appCode, "appCode", "string"),
     validateOption(userId, "userId", "string"),
+    validateOption(beforeSendData, "beforeSendData", "function"),
+    validateOption(afterSendData, "afterSendData", "function"),
   ];
   return validateList.every((item) => !!item);
 };

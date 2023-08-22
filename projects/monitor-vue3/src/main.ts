@@ -11,8 +11,9 @@ app.use(ElementPlus);
 app.use(webMonitor, {
   dsn: "http://localhost:8080/api/reportData",
   appName: "测试vue3",
-  isRecordScreen: true,
+  isRecordScreen: false,
   isHttpError: true,
+  cacheWatingTime: 0,
   afterSendData: (data: any) => {
     console.log("我是发送后的钩子函数回调了-----", data);
     // @ts-ignore
@@ -23,6 +24,7 @@ app.use(webMonitor, {
   },
   beforeSendData: (data: any) => {
     console.log("我是发送前面的钩子函数回调了-----", data);
+    return data
   },
 });
 app.mount("#app");

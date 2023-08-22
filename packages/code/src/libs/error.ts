@@ -218,7 +218,7 @@ function emitError(errorInfo: any): void {
   if (options.isRecordScreen) {
     info = { ...info, recordScreen: zip(getRecordEvent()) };
   }
-  transportData.emit(info, true);
+  transportData.emit(info);
 }
 
 export { initError, parseError, emitError };

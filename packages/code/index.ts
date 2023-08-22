@@ -6,6 +6,7 @@ import { initRecordScreen, getRecordEvent } from "./src/libs/recordscreen";
 import { initReplace } from "./src/libs/replaceApi";
 import { initTransportData } from "./src/libs/reportData";
 import { initRequestHttp } from "./src/libs/requestHttpError";
+import { initNetStatus } from "./src/libs/net-status";
 import type { InitOptions } from "./src/types/options";
 import { _global, _support } from "./src/utils/global";
 
@@ -33,6 +34,7 @@ function init(options: InitOptions): void {
   // 初始化
   initReplace();
   initTransportData();
+  initNetStatus();
 
   // 初始化各个业务模块
   initError();

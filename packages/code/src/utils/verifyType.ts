@@ -4,6 +4,10 @@ export const isType = (type: any) => {
   };
 };
 
+
+export const isFlase = (val: any) => {
+  return variableTypeDetection.isBoolean(val) && String(val) === 'false'
+}
 /**
  * 检测变量类型
  * @param type

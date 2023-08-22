@@ -118,6 +118,35 @@ export function sendByBeacon(url: string, data: any) {
   }
   return false;
 }
+// fetch请求上报
+export function sendFetchPost(url: string, data: any): Promise<Response> {
+  return fetch(url, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "text/plain;charset=UTF-8",
+    },
+  });
+}
+
+// 图片打点上报
+export function sendImgPost(url: string, data: any): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const spliceStr = url.indexOf("?") === -1 ? "?" : "&";
+    img.src = `${url}${spliceStr}data=${encodeURIComponent(
+      JSON.stringify(data)
+    )}`;
+    img.onload = () => {
+      // 发送成功
+      resolve();
+    };
+    img.onerror = (e) => {
+      // 发送失败
+      reject(e);
+    };
+  });
+}
 
 /**
  * 获取当前页面的url
@@ -140,8 +169,8 @@ export function isObjectOverSize(object: any, limitInKB: number) {
   // const byteLength = new Blob([jsonString]).size;
   // 优点是高效且准确地计算字节长度。
   // 缺点是相对于创建 Blob 对象的方法稍微复杂一些，并且需要额外引入 TextEncoder 对象。
-  const byteLength = new TextEncoder().encode(jsonString).length
-  console.log('数据大小------', byteLength);
+  const byteLength = new TextEncoder().encode(jsonString).length;
+  console.log("数据大小------", byteLength);
   return byteLength > limitInKB * 1024;
 }
 
@@ -156,7 +185,48 @@ export function getGetParams(url: string) {
   if (!search) return params;
   search.split("&").forEach((item) => {
     const [key, value] = item.split("=");
-    params[decodeURIComponent(key)] = decodeURIComponent(value)
+    params[decodeURIComponent(key)] = decodeURIComponent(value);
   });
   return params;
+}
+
+/**
+ * 批量执行方法
+ * @param funList 方法数组
+ * @param through 是否将第一次参数贯穿全部方法
+ * @param args 额外参数
+ * @returns
+ */
+export function executeFunctions(
+  funList: any,
+  through: boolean,
+  args: any
+): any {
+  if (funList.length === 0) return args;
+
+  let result: any = undefined;
+  // eslint-disable-next-line no-debugger
+  debugger;
+  for (let i = 0; i < funList.length; i++) {
+    const func = funList[i];
+    if (i === 0 || through) {
+      result = func(args);
+    } else {
+      result = func(result);
+    }
+  }
+  return result;
+}
+
+/**
+ * 异步执行
+ * requestIdleCallback 浏览器空闲会执行
+ * requestAnimationFrame 浏览器刷新频率
+ */
+export function sendNextTick(callback: () => void) {
+  return (
+    window.requestIdleCallback ||
+    window.requestAnimationFrame ||
+    ((callback) => setTimeout(callback, 17))(callback)
+  );
 }

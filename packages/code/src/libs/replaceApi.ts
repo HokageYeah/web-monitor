@@ -33,6 +33,12 @@ const replace = (key: EVENTTYPES) => {
     case EVENTTYPES.XHRSEND:
       XHRSendfetchReplace(EVENTTYPES.XHRSEND);
       break;
+    case EVENTTYPES.ONLINE:
+      listenOnline(EVENTTYPES.ONLINE);
+      break;
+    case EVENTTYPES.OFFLINE:
+      listenOffline(EVENTTYPES.OFFLINE);
+      break;
     default:
       break;
   }
@@ -141,5 +147,30 @@ function XHRSendfetchReplace(type: EVENTTYPES) {
     originSend.apply(this, args);
   };
 }
+
+// 监听 - offline 网络是否关闭
+const listenOffline = (type: EVENTTYPES) => {
+  on(
+    _global,
+    type,
+    (e: Event) => {
+      // 错误用eventbus 抛函数
+      eventBus.publishSubscribe(type, e);
+    },
+    true
+  );
+};
+// 监听 - online 网络是否开启
+const listenOnline = (type: EVENTTYPES) => {
+  on(
+    _global,
+    type,
+    (e: Event) => {
+      // 错误用eventbus 抛函数
+      eventBus.publishSubscribe(type, e);
+    },
+    true
+  );
+};
 
 export { initReplace };

@@ -1,6 +1,6 @@
 <template>
   <div class="toperror">
-    <el-button type="primary" size="small" @click="codeError()"
+    <el-button id="codeErr"  type="primary" size="small" @click="codeError()"
       >点击js报错</el-button
     >
     <el-button type="primary" size="small" @click="promiseError()"
@@ -44,6 +44,12 @@
     <el-button type="success" size="small" @click="errorPlay()"
       >点击播放</el-button
     >
+    <el-button type="danger" size="small" @click="batchErrorA(10)">
+      立即触发代码错误-10条
+    </el-button>
+    <el-button type="danger" size="small" @click="batchErrorAT(20)">
+      异步触发代码错误-20条
+    </el-button>
     <el-dialog
       v-model="errDialogVisible"
       width="1024px"
@@ -60,7 +66,7 @@ import rrwebPlayer from "rrweb-player";
 import "rrweb-player/dist/style.css";
 import { ref, nextTick, onMounted } from "vue";
 import axios from "axios";
-import { unzipRecordScreen, setUserId} from "@web-monitor/vue3";
+import { unzipRecordScreen, setUserId } from "@web-monitor/vue3";
 defineOptions({ name: "App" });
 const errDialogVisible = ref(false);
 const recordscreen = ref(null);
@@ -70,7 +76,7 @@ let playPath: any;
 onMounted(() => {
   // @ts-ignore
   window.getAllMonitorList = getAllMonitorList;
-  setUserId('123dd')
+  setUserId("123dd");
 });
 
 const codeError = () => {
@@ -252,6 +258,20 @@ const onClickAxiosPostError = () => {
       console.log("axios-err", err);
     });
 };
+
+// ------- 批量错误 -------
+const batchErrorA = (num: number) => {
+  for (let x = 1; x <= num; x++) {
+    document.getElementById("codeErr")?.click();
+  }
+}
+const batchErrorAT = (num: number) => {
+  for (let x = 1; x <= num; x++) {
+    setTimeout(() => {
+      document.getElementById("codeErr")?.click();
+    }, x * 300);
+  }
+}
 </script>
 <style scoped lang="scss">
 .toperror {
