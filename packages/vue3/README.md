@@ -64,7 +64,7 @@
   | browser        | string | Chrome 等                                          | 浏览器名称                                                               |
   | browserVersion | string | 116.0.0.0 等                                       | 浏览器版本                                                               |
   | device         | string | Macintosh（你使用的是 Macintosh 型号的设备。）     | 指用户使用的具体设备型号或名称                                           |
-  | device_type    | string | 个人电脑 (PC)、手机 (Mobile)、平板电脑 (Tablet) 等 | 指设备的一般类型或类别，                                                 |
+  | deviceType     | string | 个人电脑 (PC)、手机 (Mobile)、平板电脑 (Tablet) 等 | 指设备的一般类型或类别，                                                 |
   | os             | string | Mac OS 等                                          | 操作系统名称                                                             |
   | osVersion      | string | 116.0.0.0 等                                       | 操作系统版本号                                                           |
   | ua             | string | 116.0.0.0 等                                       | 用户代理（User Agent），是一个字符串，包含了浏览器和操作系统等信息的描述 |
@@ -106,7 +106,7 @@
   | browser        | string | Chrome 等                                          | 浏览器名称                                                               |
   | browserVersion | string | 116.0.0.0 等                                       | 浏览器版本                                                               |
   | device         | string | Macintosh（你使用的是 Macintosh 型号的设备。）     | 指用户使用的具体设备型号或名称                                           |
-  | device_type    | string | 个人电脑 (PC)、手机 (Mobile)、平板电脑 (Tablet) 等 | 指设备的一般类型或类别，                                                 |
+  | deviceType     | string | 个人电脑 (PC)、手机 (Mobile)、平板电脑 (Tablet) 等 | 指设备的一般类型或类别，                                                 |
   | os             | string | Mac OS 等                                          | 操作系统名称                                                             |
   | osVersion      | string | 116.0.0.0 等                                       | 操作系统版本号                                                           |
   | ua             | string | 116.0.0.0 等                                       | 用户代理（User Agent），是一个字符串，包含了浏览器和操作系统等信息的描述 |
@@ -151,7 +151,7 @@
   | browser        | string | Chrome 等                                          | 浏览器名称                                                               |
   | browserVersion | string | 116.0.0.0 等                                       | 浏览器版本                                                               |
   | device         | string | Macintosh（你使用的是 Macintosh 型号的设备。）     | 指用户使用的具体设备型号或名称                                           |
-  | device_type    | string | 个人电脑 (PC)、手机 (Mobile)、平板电脑 (Tablet) 等 | 指设备的一般类型或类别，                                                 |
+  | deviceType     | string | 个人电脑 (PC)、手机 (Mobile)、平板电脑 (Tablet) 等 | 指设备的一般类型或类别，                                                 |
   | os             | string | Mac OS 等                                          | 操作系统名称                                                             |
   | osVersion      | string | 116.0.0.0 等                                       | 操作系统版本号                                                           |
   | ua             | string | 116.0.0.0 等                                       | 用户代理（User Agent），是一个字符串，包含了浏览器和操作系统等信息的描述 |

@@ -30,7 +30,7 @@ _support.deviceInfo = {
   os: uaResult.os.name, // Windows
   ua: uaResult.ua,
   device: uaResult.device.model ? uaResult.device.model : 'Unknow',
-  device_type: uaResult.device.type ? uaResult.device.type : 'Pc',
+  deviceType: uaResult.device.type ? uaResult.device.type : 'Pc',
 }
 
 // global是在JavaScript中全局作用域中定义的一个对象，它代表全局命名空间。
