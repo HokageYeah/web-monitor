@@ -54,7 +54,7 @@ const listenError = (type: EVENTTYPES) => {
     _global,
     type,
     (e: Event) => {
-      console.log("注意报错了listenError-----");
+      // console.log("注意报错了listenError-----");
       // 错误用eventbus 派发给相关的事件处理
       eventBus.publishSubscribe(type, e);
     },
@@ -67,7 +67,7 @@ const listenError = (type: EVENTTYPES) => {
  */
 const listenEunhandledrejection = (type: EVENTTYPES) => {
   on(_global, type, (e: PromiseRejectionEvent) => {
-    console.log("注意报错了listenEunhandledrejection-----");
+    // console.log("注意报错了listenEunhandledrejection-----");
     // 错误用eventbus 派发给相关的事件处理
     eventBus.publishSubscribe(type, e);
   });
@@ -78,17 +78,13 @@ const listenEunhandledrejection = (type: EVENTTYPES) => {
  */
 function fetchReplace(type: EVENTTYPES) {
   if (typeof _global.fetch == "undefined") return;
-  debugger;
   const originFetch = _global.fetch;
   _global.fetch = function (...args) {
-    debugger;
     const startTime = getTimestamp();
     const promise = originFetch.apply(this, args).then((res: any) => {
-      debugger;
       eventBus.publishSubscribe(type, ...args, res, startTime);
       return res;
     });
-    // debugger
     // const event = {
     //   type,
     //   target: promise,
@@ -98,7 +94,6 @@ function fetchReplace(type: EVENTTYPES) {
     //     url: args[0].url,
     //   },
     // };
-    // debugger
     // eventBus.publishSubscribe(type, event);
     return promise;
   };
@@ -108,14 +103,11 @@ function fetchReplace(type: EVENTTYPES) {
  * 重写XHR-open，添加拦截
  */
 function XHROpenReplace(type: EVENTTYPES) {
-  debugger;
   if (typeof _global.XMLHttpRequest == "undefined") return;
   const originOpen = XMLHttpRequest.prototype.open;
   XMLHttpRequest.prototype.open = function (...args: any[]) {
-    debugger;
     const startTime = getTimestamp();
     // this.addEventListener("load", () => {
-    //   debugger;
     //   eventBus.publishSubscribe(type, this, ...args, startTime);
     // });
     eventBus.publishSubscribe(type, this, ...args, startTime);
@@ -127,20 +119,16 @@ function XHROpenReplace(type: EVENTTYPES) {
  * 重写XHR-send，添加拦截
  */
 function XHRSendfetchReplace(type: EVENTTYPES) {
-  debugger;
   if (typeof _global.XMLHttpRequest == "undefined") return;
   const originSend = XMLHttpRequest.prototype.send;
   XMLHttpRequest.prototype.send = function (...args) {
-    debugger;
     eventBus.publishSubscribe(type, this, ...args);
     // eventBus.publishSubscribe(type, this, ...args, startTime);
     // this.addEventListener("error", (error) => {
-    //   debugger;
     //   console.log(error);
     //   eventBus.publishSubscribe(type, this, ...args, startTime);
     // });
     // this.onerror = function (error) {
-    //   debugger;
     //   // 在这里添加处理请求报错的逻辑
     //   console.error("XMLHttpRequest 请求报错", error);
     // };

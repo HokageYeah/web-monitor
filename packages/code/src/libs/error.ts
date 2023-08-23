@@ -26,7 +26,6 @@ const parseErrorEvent = (event: ErrorEvent | PromiseRejectedResult) => {
   const { target } = event;
   if (target instanceof HTMLElement) {
     // 资源加载出错
-    debugger;
     const htmlTarget = <HTMLElement>target;
     // 为1代表节点是元素节点
     if (htmlTarget.nodeType == 1) {
@@ -53,8 +52,6 @@ const parseErrorEvent = (event: ErrorEvent | PromiseRejectedResult) => {
     }
   }
   const stackFrame = ErrorStackParser.parse(!target ? event : event.error)[0];
-  debugger;
-  console.log(stackFrame);
   // 代码异常
   if (event.error) {
     // chrome中的error对象没有fileName等属性,将event中的补充给error对象
@@ -139,16 +136,11 @@ function parseStack(err: Error): ErrorStack {
  * @returns 相对标准格式的错误信息
  */
 const parseError = (e: any) => {
-  debugger;
-  console.log(e);
   if (e instanceof Error) {
     // fileName: 引发此错误的文件的路径 (此属性为非标准，所以下面得区分)
     const { message, stack } = e as Error & InstabilityNature;
-    debugger;
     const stackFrame = ErrorStackParser.parse(e)[0];
     const { fileName, columnNumber, lineNumber } = stackFrame;
-    debugger;
-    console.log(stackFrame);
     if (fileName) {
       return {
         errMessage: message,
@@ -179,10 +171,7 @@ const initError = () => {
   eventBus.addSubscribe({
     type: EVENTTYPES.ERROR,
     callback: (e: ErrorEvent) => {
-      console.log("错误信息-------", e);
-      debugger;
       const errorInfo = parseErrorEvent(e);
-      debugger;
       //   if (isIgnoreErrors(errorInfo)) return;
       emitError(errorInfo);
     },
@@ -193,10 +182,7 @@ const initError = () => {
   eventBus.addSubscribe({
     type: EVENTTYPES.UNHANDLEDREJECTION,
     callback: (e: PromiseRejectedResult) => {
-      console.log("错误信息PromiseRejectedResult-------", e);
-      debugger;
       const errorInfo = parseErrorEvent(e);
-      debugger;
       emitError(errorInfo);
     },
   });
@@ -215,7 +201,6 @@ function emitError(errorInfo: any): void {
     triggerTime: getTimestamp(),
     deviceInfo: _support.deviceInfo, // 获取设备信息
   };
-  debugger
   if (options.isRecordScreen) {
     info = { ...info, recordScreen: zip(getRecordEvent()) };
   }

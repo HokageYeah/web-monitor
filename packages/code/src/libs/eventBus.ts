@@ -19,14 +19,12 @@ export class EventBus {
 
   // 添加订阅
   addSubscribe(event: EventHandler) {
-    debugger
     !this.eventHandlers[event.type] && (this.eventHandlers[event.type] = []);
     this.eventHandlers[event.type]?.push(event.callback);
   }
 
   // 发布订阅
   publishSubscribe(event: EVENTTYPES, ...args: any[]) {
-    debugger
     const eventCallbacks = this.eventHandlers[event];
     if (eventCallbacks) {
       eventCallbacks.forEach((element) => {

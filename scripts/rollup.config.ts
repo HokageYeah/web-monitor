@@ -69,7 +69,7 @@ const options = (path: string) => {
         nodeResolve(),
         json(),
         esbuildPlugin,
-        terserPlugin
+        // terserPlugin
       ],
     },
     {

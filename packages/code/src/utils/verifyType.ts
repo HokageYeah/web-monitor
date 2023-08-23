@@ -75,7 +75,6 @@ export function isEmpty(wat: any): boolean {
  * @returns 类型
  */
 export function typeofAny(target: any): string {
-  debugger
   console.log(target);
   console.log(Object.prototype.toString.call(target).slice(8, -1));
   return Object.prototype.toString.call(target).slice(8, -1).toLowerCase();

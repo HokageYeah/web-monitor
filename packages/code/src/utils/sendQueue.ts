@@ -19,8 +19,7 @@ export class sendQueue {
       this.isFlushing = true;
       if ("requestIdleCallback" in window) {
         requestIdleCallback((dedaline) => {
-          debugger
-          console.log(dedaline);
+          // console.log(dedaline);
           this.flushStack();
         });
       } else {

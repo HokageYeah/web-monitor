@@ -18,7 +18,6 @@ export class RecordScreen {
   private init() {
     record({
       emit: (event: any, isCheckout: any) => {
-        console.log("event-----", event, isCheckout);
         const lastEvents = this.eventList[this.eventList.length - 1];
         lastEvents.eventList.push(event);
         if (isCheckout) {
@@ -62,8 +61,6 @@ const getRecordEvent = (): RecordEventScope[] => {
  * @param data 压缩源
  */
 const zip = (data: any): string => {
-  debugger;
-  console.log("压缩----", data);
   if (!data) return data;
   // 判断数据是否需要转为JSON
   const dataJson =
@@ -78,7 +75,6 @@ const zip = (data: any): string => {
   arr.forEach((item: any) => {
     s += String.fromCharCode(item);
   });
-  debugger;
   return Base64.btoa(s);
 };
 
@@ -87,12 +83,10 @@ const zip = (data: any): string => {
  * @param b64Data 解压源
  */
 const unzip = (b64Data: string) => {
-  debugger
   const strData = Base64.atob(b64Data);
   const charData = strData.split("").map(function (x) {
     return x.charCodeAt(0);
   });
-  debugger
   const binData = new Uint8Array(charData);
   const data: any = pako.ungzip(binData);
   // ↓切片处理数据，防止内存溢出报错↓

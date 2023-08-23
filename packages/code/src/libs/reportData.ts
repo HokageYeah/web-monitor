@@ -17,15 +17,9 @@ export class TransportData {
   private timeoutID: NodeJS.Timeout | undefined; // 延迟发送ID
   private send(url: string, data: any) {
     return new Promise((resolve, reject) => {
-      debugger;
-      console.log(this);
       const httpXhrPost = (url: string, data: any) => {
-        debugger;
-        console.log(this);
         sendFetchPost(url, data)
           .then((res) => {
-            console.log("xhr--------", res);
-            debugger;
             // 如果上报接口出错，不进行过滤的话会出现请求死循环
             if (res.status == 200 || res.status == 304) {
               // 处理返回的数据
@@ -36,19 +30,16 @@ export class TransportData {
             console.error(error);
           });
       };
-      debugger;
       // sendBeacon 最大64kb
       const isOverSize64 = isObjectOverSize(data, 64);
       // img 限制在 2kb
       const isOverSize2 = isObjectOverSize(data, 2);
-      console.log("isOverSize----", isOverSize64);
       let sendType = 1;
       if (_global.navigator) {
         sendType = isOverSize64 ? 3 : 1;
       } else {
         sendType = isOverSize2 ? 3 : 2;
       }
-      debugger;
       switch (sendType) {
         case 1:
           // sendBeacon 最大64kb
@@ -82,7 +73,6 @@ export class TransportData {
 
   // 列表事件发送
   private listSend() {
-    // debugger;
     // 如消息为空，目前什么都不做
     if (this.events.length == 0) return;
     // 需要发送的事件
@@ -91,20 +81,18 @@ export class TransportData {
     const sendParams = {
       eventInfo: map(sendEvents, (e: any) => e),
     };
-    debugger;
     const afterSendParams = executeFunctions(
       options.beforeSendDataList,
       false,
       sendParams
     );
-    debugger;
     if (isFlase(afterSendParams)) return;
     if (!this.validateOptions(afterSendParams, "beforeSendData")) return;
     // 开始批量发送数据
     this.send(options.dsn, afterSendParams).then((res: any) => {
       console.log("发送给服务器消息成功～～", afterSendParams);
-      console.log("发送给服务器消息成功Blob～～", Blob);
-      console.log("发送给服务器消息成功Promise～～", res);
+      // console.log("发送给服务器消息成功Blob～～", Blob);
+      // console.log("发送给服务器消息成功Promise～～", res);
       executeFunctions(options.afterSendDataList, true, {
         ...afterSendParams,
       });
@@ -141,12 +129,9 @@ export class TransportData {
     if (this.timeoutID) clearTimeout(this.timeoutID);
     // 满足最大记录数,立即发送,否则定时发送
     if (this.events.length >= options.cacheMaxLength || flush) {
-      debugger;
-      console.log("--------查看么cacheMaxLength--", this.events);
       this.listSend();
     } else {
       // 宏任务队列延迟运行
-      console.log("--------查看么我改变了timeoutID--", this.events);
       this.timeoutID = setTimeout(
         this.listSend.bind(this),
         options.cacheWatingTime
@@ -154,7 +139,6 @@ export class TransportData {
     }
 
     // options.beforeSendData(e);
-    // debugger;
     // let json = JSON.stringify({ name: "顶顶顶顶顶" });
     // console.log("json------", json);
     // const blob = new Blob([json], { type: "application/json" });

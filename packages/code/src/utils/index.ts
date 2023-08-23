@@ -206,7 +206,6 @@ export function executeFunctions(
 
   let result: any = undefined;
   // eslint-disable-next-line no-debugger
-  debugger;
   for (let i = 0; i < funList.length; i++) {
     const func = funList[i];
     if (i === 0 || through) {

@@ -25,8 +25,8 @@ const initReplaceFetch = () => {
     ) => {
       const { method, body } = reqOptions;
       const { url, status, statusText = "请求资源未发现", type } = response;
-      console.log(reqOptions);
-      console.log(response);
+      // console.log(reqOptions);
+      // console.log(response);
       //  转换成小写
       const requestMethod = String(method)?.toLocaleLowerCase();
       //   如果状态status没有返回200、或者304缓存 则认为报错了ttp状态码，则不记录
@@ -44,7 +44,6 @@ const initReplaceFetch = () => {
         };
         // 如果上报接口出错，不进行过滤的话会出现请求死循环
         if (url !== options.dsn) {
-          debugger;
           triggerError(event);
         }
       }
@@ -84,11 +83,10 @@ const initReplaceXHR = () => {
       url: string,
       startTime: number
     ) => {
-      debugger;
-      console.log(that);
-      console.log(method);
-      console.log(url);
-      console.log(startTime);
+      // console.log(that);
+      // console.log(method);
+      // console.log(url);
+      // console.log(startTime);
       requestConfig.url = url;
       requestConfig.method = String(method).toLocaleLowerCase();
       requestConfig.requestParams = JSON.stringify(getGetParams(url));
@@ -97,9 +95,8 @@ const initReplaceXHR = () => {
   eventBus.addSubscribe({
     type: EVENTTYPES.XHRSEND,
     callback: (that: XMLHttpRequest & any, body) => {
-      debugger;
-      console.log(that);
-      console.log(body);
+      // console.log(that);
+      // console.log(body);
       //  监听readyState 的状态改变。会以此变成2，3，4会触发三次这里。
       // 监听readyState变成4的完成情况
       on(that, EVENTTYPES.READYSTATECHANGE, () => {
@@ -115,8 +112,8 @@ const initReplaceXHR = () => {
           } = that;
           const requestUrl = responseURL || requestConfig.url;
 
-          debugger;
-          console.log(that);
+          // debugger;
+          // console.log(that);
           //   如果状态status没有返回200、或者304缓存 则认为报错了ttp状态码，则不记录
           if (status !== 200 && status !== 304 && status !== 204) {
             const event = {
@@ -134,7 +131,6 @@ const initReplaceXHR = () => {
                   : requestConfig.requestParams,
             };
             if (requestUrl !== options.dsn) {
-              debugger;
               triggerError(event);
             }
           }

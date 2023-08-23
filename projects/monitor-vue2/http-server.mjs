@@ -114,7 +114,7 @@ function handlePostRequest(req, res, path) {
       switch (path) {
         case "/api/reportData":
           console.log("发送消息~~~");
-          allMonitorList.push(data);
+          allMonitorList.push(...data.eventInfo);
           res.end(
             JSON.stringify({
               meaage: "上报成功！",

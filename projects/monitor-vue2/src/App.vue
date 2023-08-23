@@ -1,7 +1,7 @@
 <template>
   <div id="appmain">
     <div class="aaa">sdsds</div>
-    <el-button type="primary" size="small" @click="codeError()"
+    <el-button id="codeErr" type="primary" size="small" @click="codeError()"
       >点击js报错</el-button
     >
     <el-button type="primary" size="small" @click="promiseError()"
@@ -45,6 +45,12 @@
     <el-button type="success" size="small" @click="errorPlay()"
       >点击播放</el-button
     >
+    <el-button type="danger" size="small" @click="batchErrorA(10)">
+      立即触发代码错误-10条
+    </el-button>
+    <el-button type="danger" size="small" @click="batchErrorAT(20)">
+      异步触发代码错误-20条
+    </el-button>
     <el-dialog
       :visible.sync="errDialogVisible"
       width="1024px"
@@ -72,7 +78,7 @@ export default {
   },
   mounted() {
     window.getAllMonitorList = this.getAllMonitorList;
-    setUserId('456')
+    setUserId("456");
   },
   methods: {
     codeError() {
@@ -186,7 +192,7 @@ export default {
       })
         .then((res) => {
           if (res.status == 404) {
-            console.log('404');
+            console.log("404");
           }
         })
         .catch(() => {});
@@ -242,6 +248,19 @@ export default {
         .catch((err) => {
           console.log("axios-err", err);
         });
+    },
+    // ------- 批量错误 -------
+    batchErrorA(num) {
+      for (let x = 1; x <= num; x++) {
+        document.getElementById("codeErr")?.click();
+      }
+    },
+    batchErrorAT(num) {
+      for (let x = 1; x <= num; x++) {
+        setTimeout(() => {
+          document.getElementById("codeErr")?.click();
+        }, x * 300);
+      }
     },
   },
 };

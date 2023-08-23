@@ -11,7 +11,7 @@ import type { InitOptions } from "./src/types/options";
 import { _global, _support } from "./src/utils/global";
 
 function init(options: InitOptions): void {
-  console.log("vue3插件初始化成功", options.dsn, options.appName);
+  // console.log("vue3插件初始化成功", options.dsn, options.appName);
   //   window.addEventListener("error", (error) => {
   //     console.log("error----", error);
   //   });

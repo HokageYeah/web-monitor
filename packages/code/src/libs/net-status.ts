@@ -12,7 +12,7 @@ export class NetStatus {
       type: EVENTTYPES.OFFLINE,
       callback: (e: ErrorEvent) => {
         if (e.type === 'offline') {
-          console.log('网络断开')
+          console.error('网络断开')
           this.isOnline = false
         }
       },

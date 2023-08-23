@@ -15,7 +15,7 @@ export class Options implements InitOptions {
   isRecordScreen = false; // 默认关闭录屏
   isHttpError = false; // 默认不开启请求报错拦截
   cacheMaxLength = 5; // 上报数据最大缓存数
-  cacheWatingTime = 5000; // 上报数据最大等待时间
+  cacheWatingTime = 1000; // 上报数据最大等待时间
   // 数据上报前的 hook
   beforeSendDataList: any[] = [];
   // 数据上报后的 hook
@@ -26,7 +26,6 @@ export class Options implements InitOptions {
   }
 
   private optionsInit(options: any) {
-    debugger;
     for (const [key, value] of Object.entries(options)) {
       (this as any)[key] = value;
     }
