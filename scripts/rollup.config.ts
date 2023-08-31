@@ -32,25 +32,25 @@ const options = (path: string) => {
       input: [`./packages/${path}/index.ts`],
       output: [
         {
-          file: `./packages/${path}/dist/index.cjs.js`,
+          file: `./packages/${path}/dist/index.cjs`,
           format: "cjs",
           sourcemap: true,
         },
         {
-          file: `./packages/${path}/dist/index.esm.js`,
+          file: `./packages/${path}/dist/index.mjs`,
           format: "esm",
           sourcemap: true,
         },
         {
           file: `./packages/${path}/dist/index.js`,
           format: "umd",
-          name: "web-see",
+          name: "web-monitor",
           sourcemap: true,
         },
         {
           file: `./packages/${path}/dist/index.min.js`,
           format: "umd",
-          name: "web-see",
+          name: "web-monitor",
           sourcemap: true,
           plugins: [uglify()],
         },
