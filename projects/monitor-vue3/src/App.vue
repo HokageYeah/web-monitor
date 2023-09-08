@@ -1,6 +1,6 @@
 <template>
   <div class="toperror">
-    <el-button id="codeErr"  type="primary" size="small" @click="codeError()"
+    <el-button id="codeErr" type="primary" size="small" @click="codeError()"
       >点击js报错</el-button
     >
     <el-button type="primary" size="small" @click="promiseError()"
@@ -16,6 +16,9 @@
     />
     <el-button type="primary" size="small" @click="asyncError"
       >异步错误</el-button
+    >
+    <el-button type="success" size="small" @click="xhrSuccess"
+      >xhr正常请求-get</el-button
     >
     <el-button type="info" size="small" @click="xhrError"
       >xhr请求报错</el-button
@@ -106,6 +109,17 @@ const asyncError = () => {
 };
 const resourceError = () => {
   showImgTrue.value = true;
+};
+const xhrSuccess = () => {
+  const xhr = new XMLHttpRequest();
+  xhr.open("get", "/getList?test=123");
+  xhr.setRequestHeader("content-type", "application/json");
+  xhr.send();
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      console.log("xhr-res", xhr.responseText);
+    }
+  };
 };
 const xhrError = () => {
   debugger;
@@ -264,14 +278,14 @@ const batchErrorA = (num: number) => {
   for (let x = 1; x <= num; x++) {
     document.getElementById("codeErr")?.click();
   }
-}
+};
 const batchErrorAT = (num: number) => {
   for (let x = 1; x <= num; x++) {
     setTimeout(() => {
       document.getElementById("codeErr")?.click();
     }, x * 300);
   }
-}
+};
 </script>
 <style scoped lang="scss">
 .toperror {
