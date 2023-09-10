@@ -4,10 +4,9 @@ export const isType = (type: any) => {
   };
 };
 
-
-export const isFlase = (val: any) => {
-  return variableTypeDetection.isBoolean(val) && String(val) === 'false'
-}
+// export const isFlase = (val: any) => {
+//   return variableTypeDetection.isBoolean(val) && String(val) === "false";
+// };
 /**
  * 检测变量类型
  * @param type
@@ -27,6 +26,22 @@ export const variableTypeDetection = {
   isSymbol: isType("Symbol"),
   isWindow: isType("Window"),
   isProcess: isType("Process"),
+};
+
+export const isRegExp = isType("RegExp");
+export const isNumber = isType("Number");
+export const isString = isType("String");
+export const isBoolean = isType("Boolean");
+export const isNull = isType("Null");
+export const isUndefined = isType("Undefined");
+export const isSymbol = isType("Symbol");
+export const isFunction = isType("Function");
+export const isObject = isType("Object");
+export const isArray = isType("Array");
+export const isProcess = isType("process");
+export const isWindow = isType("Window");
+export const isFlase = (val: any) => {
+  return isBoolean(val) && String(val) === "false";
 };
 
 /**

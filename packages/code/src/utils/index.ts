@@ -1,5 +1,6 @@
 import { EVENTTYPES } from "../common/constant";
 import { AnyFun } from "../types/options";
+import { isFunction } from "./verifyType";
 
 /**
  * 获取当前的时间戳
@@ -228,4 +229,29 @@ export function sendNextTick(callback: () => void) {
     window.requestAnimationFrame ||
     ((callback) => setTimeout(callback, 17))(callback)
   );
+}
+
+/**
+ * 重写对象上面的某个属性
+ * 针对浏览器内置的 XMLHttpRequest、fetch 对象，利用 AOP 切片编程重写该方法
+ * @param source 需要被重写的对象
+ * @param name 需要被重写对象的key
+ * @param replacement 以原有的函数作为参数，执行并重写原有函数
+ * @param isForced 是否强制重写（可能原先没有该属性）
+ */
+
+export function replaceAop(
+  source: any,
+  name: string,
+  replacement: AnyFun,
+  isForced: boolean = false
+): void {
+  if (source === undefined) return;
+  if (name in source || isForced) {
+    const original = source[name];
+    const wrapped = replacement(original);
+    if (isFunction(wrapped)) {
+      source[name] = replacement;
+    }
+  }
 }
