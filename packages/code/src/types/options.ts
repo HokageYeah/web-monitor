@@ -17,6 +17,14 @@ export interface InitOptions {
   afterSendData?: (data: any) => void; // 上报数据后的 回调hook
   cacheMaxLength?: number; // 上报数据最大缓存数
   cacheWatingTime?: number; // 上报数据最大等待时间
+  performance?: Performance | boolean; // // 性能指标
+  pv?: Pv | boolean; // PV配置
+}
+
+interface Performance {
+  core?: boolean; // 是否采集静态资源、接口的相关数据
+  firstResource?: boolean; // 是否采集首次进入页面的数据
+  server?: boolean; // 是否采集接口请求
 }
 
 export interface RecordEventScope {
