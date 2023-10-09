@@ -20,6 +20,14 @@ export class Options implements InitOptions {
   beforeSendDataList: any[] = [];
   // 数据上报后的 hook
   afterSendDataList: any[] = [];
+  performance = {
+    core: false, // 性能数据-是否采集静态资源、接口的相关数据
+    firstResource: false, // 性能数据-是否采集首次进入页面的数据(ps: tcp连接耗时,HTML加载完成时间,首次可交互时间)
+    server: false, // 接口请求-是否采集接口请求(成功的才会采集)
+  };
+  pv = {
+    core: false, // 页面跳转-是否自动发送页面跳转相关数据
+  };
 
   constructor(initOptions: InitOptions) {
     this.optionsInit(initOptions);
@@ -35,6 +43,23 @@ export class Options implements InitOptions {
     }
     if (afterSendData) {
       this.afterSendDataList = [this.afterSendData];
+    }
+    /**
+     * 对配置项进行转换
+     * 如果有些对象的配置项传递的是Boolean值，则更换对象内的值都是Boolean值
+     */
+    const { performance, pv } = options;
+    if (typeof performance === "boolean") {
+      this.performance = {
+        core: performance,
+        firstResource: performance,
+        server: performance,
+      };
+    }
+    if (typeof pv === "boolean") {
+      this.pv = {
+        core: pv,
+      };
     }
   }
 }

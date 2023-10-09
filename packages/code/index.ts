@@ -9,6 +9,7 @@ import { initRequestHttp } from "./src/libs/requestHttpError";
 import { initNetStatus } from "./src/libs/net-status";
 import type { InitOptions } from "./src/types/options";
 import { _global, _support } from "./src/utils/global";
+import { initPerformance } from "./src/libs/performance";
 
 function init(options: InitOptions): void {
   // console.log("vue3插件初始化成功", options.dsn, options.appName);
@@ -40,7 +41,8 @@ function init(options: InitOptions): void {
   initError();
   initRecordScreen();
   initRequestHttp();
-
+  initPerformance();
+  
   // 初始化成功设置为true
   _global.__webMonitorInit__ = true;
 }

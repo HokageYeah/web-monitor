@@ -14,6 +14,7 @@ app.use(webMonitor, {
   isRecordScreen: true,
   isHttpError: true,
   cacheWatingTime: 0,
+  performance: true,
   afterSendData: (data: any) => {
     console.log("我是发送后的钩子函数回调了-----", data);
     // @ts-ignore
@@ -24,7 +25,7 @@ app.use(webMonitor, {
   },
   beforeSendData: (data: any) => {
     console.log("我是发送前面的钩子函数回调了-----", data);
-    return data
+    return data;
   },
 });
 app.mount("#app");
