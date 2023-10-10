@@ -1,3 +1,4 @@
+0
 import { WebMonitor } from "../types/options";
 import { variableTypeDetection } from "./verifyType";
 import { UAParser } from 'ua-parser-js';

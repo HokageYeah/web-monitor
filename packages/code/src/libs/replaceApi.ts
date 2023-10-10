@@ -39,6 +39,10 @@ const replace = (key: EVENTTYPES) => {
     case EVENTTYPES.OFFLINE:
       listenOffline(EVENTTYPES.OFFLINE);
       break;
+    // 页面加载完成LOAD
+    case EVENTTYPES.LOAD:
+      listenLoad(EVENTTYPES.LOAD); 
+      break
     default:
       break;
   }
@@ -160,5 +164,20 @@ const listenOnline = (type: EVENTTYPES) => {
     true
   );
 };
+
+/**
+ * 监听页面加载 - load事件
+ */
+function listenLoad(type: EVENTTYPES) {
+  on(
+    _global,
+    type,
+    (e: Event) => {
+      // 错误用eventbus 抛函数
+      eventBus.publishSubscribe(type, e);
+    },
+    true
+  );
+}
 
 export { initReplace };

@@ -1,6 +1,6 @@
 import { EVENTTYPES } from "../common/constant";
 import { AnyFun } from "../types/options";
-import { isFunction } from "./verifyType";
+import { isFunction, isNumber } from "./verifyType";
 
 /**
  * 获取当前的时间戳
@@ -156,6 +156,23 @@ export function sendImgPost(url: string, data: any): Promise<void> {
 export function getLocationHref() {
   if (typeof document === "undefined" || document.location == null) return "";
   return window.location.href;
+}
+
+/**
+ * 格式化对象(针对数字类型属性)
+ * 小数位数保留最多两位、空值赋 undefined
+ * @returns source 源对象
+ */
+export function normalizeObject(source: any) {
+  return JSON.parse(
+    JSON.stringify(source, (key, value) => {
+      // if (typeof value === "number") {
+      if (isNumber(value)) {
+        return value === 0 ? 0 : value.toFixed(2);
+      }
+      return value;
+    })
+  );
 }
 
 /**

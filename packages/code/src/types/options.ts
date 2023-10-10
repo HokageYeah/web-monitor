@@ -45,6 +45,7 @@ export interface WebMonitor {
   transportData: any;
   options: InitOptions;
   netStatus: NetStatus;
+  firstScreen: any // 首屏信息
   deviceInfo: {
     [key: string]: any;
   };
