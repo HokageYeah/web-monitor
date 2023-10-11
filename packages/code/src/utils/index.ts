@@ -28,7 +28,7 @@ export function isObjValidKey(
   key: string | number | symbol,
   object: object
 ): key is keyof typeof object {
-  return object.hasOwnProperty(key);
+  return object.hasOwnProperty(key) || key in object;
 }
 
 /**

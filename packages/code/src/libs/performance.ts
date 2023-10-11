@@ -1,5 +1,11 @@
 import { EVENTTYPES, SEDNEVENTTYPES, SENDCODE } from "../common/constant";
-import { getLocationHref, getTimestamp, normalizeObject } from "../utils";
+import {
+  getLocationHref,
+  getTimestamp,
+  isObjValidKey,
+  normalizeObject,
+  on,
+} from "../utils";
 import { _global, _support } from "../utils/global";
 import { eventBus } from "./eventBus";
 import { options } from "./options";
@@ -14,6 +20,27 @@ const supported = {
   PerformanceObserver: "PerformanceObserver" in _global,
   MutationObserver: "MutationObserver" in _global,
   PerformanceNavigationTiming: "PerformanceNavigationTiming" in _global,
+};
+
+// 资源属性
+const performanceEntryAttrs = {
+  initiatorType: "",
+  transferSize: 0,
+  encodedBodySize: 0,
+  decodedBodySize: 0,
+  duration: 0,
+  redirectStart: 0,
+  redirectEnd: 0,
+  startTime: 0,
+  fetchStart: 0,
+  domainLookupStart: 0,
+  domainLookupEnd: 0,
+  connectStart: 0,
+  connectEnd: 0,
+  requestStart: 0,
+  responseStart: 0,
+  responseEnd: 0,
+  workerStart: 0,
 };
 
 export function initPerformance() {
@@ -52,7 +79,18 @@ function observeResource() {
   }
   // 性能数据-是否采集静态资源、接口的相关数据
   if (supported.performance && options.performance.core) {
-    // 待开发
+    traceResourcePerformance(_global.performance);
+    debugger;
+    if (supported.PerformanceObserver) {
+      // 监听异步资源加载性能数据 chrome≥52
+      const observer = new PerformanceObserver(traceResourcePerformance);
+      observer.observe({ entryTypes: ["resource"] });
+    } else if (supported.MutationObserver) {
+      // }if (supported.MutationObserver) {
+      debugger;
+      // 监听资源、DOM更新操作记录 chrome≥26 ie≥11
+      observeSourceInsert();
+    }
   }
 }
 
@@ -116,9 +154,9 @@ function observeNavigationTiming() {
 
   // 各个时间数据
   const resultInfo = { ...times };
-  debugger
+  debugger;
   console.log(resultInfo);
-  _support.firstScreen = { ...resultInfo }
+  _support.firstScreen = { ...resultInfo };
 
   transportData.emit(
     normalizeObject({
@@ -131,4 +169,112 @@ function observeNavigationTiming() {
       deviceInfo: _support.deviceInfo, // 获取设备信息
     })
   );
+}
+
+/**
+ * 发送页面追踪资源加载性能数据
+ * (支持getEntriesByType的情况下才追踪)
+ */
+function traceResourcePerformance(performance: PerformanceObserverEntryList) {
+  // 排除xmlhttprequest类型,服务器有响应便会记录,包括404的请求,转由http-request模块负责记录请求数据,区分请求状态
+  // 同时也会排除一些其他类型,比如在引入一个script后会触发一次性能监控,它的类型是beacon,这一次的要排除
+  // 过滤掉非静态资源的 fetch、 xmlhttprequest、beacon
+  const observerTypeList = ["img", "script", "link", "audio", "video", "css"];
+  // 获取页面加载的资源列表，同时可以结合  initiatorType 字段来判断资源类型，对资源进行过滤
+  const entries = performance.getEntriesByType(
+    "resource"
+  ) as PerformanceResourceTiming[];
+  debugger;
+  console.log(entries);
+  // 过滤掉非静态资源的 fetch、 xmlhttprequest、beacon
+  const filterEntries: PerformanceResourceTiming[] = entries.filter((entry) => {
+    return observerTypeList.includes(entry.initiatorType);
+  });
+  debugger;
+  console.log(filterEntries);
+  const recordsList: any[] = [];
+  filterEntries.forEach((entry) => {
+    const value: any = {};
+    Object.keys(performanceEntryAttrs).forEach((key) => {
+      if (isObjValidKey(key, entry)) {
+        value[key] = entry[key];
+      }
+    });
+    recordsList.push(
+      normalizeObject({
+        ...value,
+        userId: options.userId,
+        eventType: SEDNEVENTTYPES.PERFORMANCE,
+        eventCode: SENDCODE.PAGE,
+        requestUrl: entry.name,
+        triggerPageUrl: getLocationHref(),
+        triggerTime: getTimestamp(),
+        deviceInfo: _support.deviceInfo, // 获取设备信息
+      })
+    );
+  });
+  debugger;
+  console.log(recordsList);
+  if (recordsList.length) transportData.emit(recordsList);
+  return recordsList;
+}
+/**
+ * 监听 - 异步插入的script、link、img, DOM更新操作记录
+ */
+function observeSourceInsert() {
+  const tags = ["img", "script", "link"];
+  // 检测异步插入的script、link、img,会有一些延迟,一些连接建立、包体大小的数据会丢失,精度下降
+  // MutationObserver DOM3 Events规范,是个异步监听,只有在全部DOM操作完成之后才会调用callback
+  const observer = new MutationObserver((mutationsList, observer) => {
+    debugger;
+    console.log('observeSourceInsert-----', mutationsList);
+    console.log(observer);
+    for (const mutation of mutationsList) {
+      const startTime = getTimestamp();
+      debugger;
+      console.log(mutation);
+      const { addedNodes = [] } = mutation;
+      addedNodes.forEach((node: Node & { src?: string; href?: string }) => {
+        const { nodeName } = node;
+        debugger;
+        if (tags.indexOf(nodeName.toLowerCase()) !== -1) {
+          on(node as Document, EVENTTYPES.LOAD, function () {
+            debugger;
+            transportData.emit(
+              normalizeObject({
+                eventType: SEDNEVENTTYPES.PERFORMANCE,
+                eventCode: SENDCODE.RESOURCE,
+                requestUrl: node.src || node.href,
+                duration: getTimestamp() - startTime,
+                triggerTime: getTimestamp(),
+                triggerPageUrl: getLocationHref(),
+                deviceInfo: _support.deviceInfo, // 获取设备信息
+              })
+            );
+          });
+          on(node as Document, EVENTTYPES.ERROR, function () {
+            debugger;
+            transportData.emit(
+              normalizeObject({
+                eventType: SEDNEVENTTYPES.PERFORMANCE,
+                eventCode: SENDCODE.RESOURCE,
+                requestUrl: node.src || node.href,
+                responseStatus: "error",
+                duration: getTimestamp() - startTime,
+                triggerTime: getTimestamp(),
+                triggerPageUrl: getLocationHref(),
+                deviceInfo: _support.deviceInfo, // 获取设备信息
+              })
+            );
+          });
+        }
+      });
+    }
+  });
+  observer.observe(_global.document, {
+    subtree: true, // 是否监听目标节点及其所有后代节点的变化。
+    childList: true, // 表示观察目标子节点的变化，比如添加或者删除目标子节点，不包括修改子节点以及子节点后代的变化。是否监听目标节点的子节点的添加或删除。
+    // attributes: true, // 是否监听目标属性的改变
+    // attributeFilter: ['src', 'href'] // 要观察的属性
+  });
 }
